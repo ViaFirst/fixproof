@@ -1,0 +1,197 @@
+{
+ "extName": {
+  "message": "Fixproof — bug reports for AI fixing"
+ },
+ "extDescription": {
+  "message": "Mark a bug on any page: element, annotated screenshot and technical context go straight to your tasks repository, ready for your AI agent."
+ },
+ "actionTitle": {
+  "message": "Report a bug (Alt+Shift+B)"
+ },
+ "modeElement": {
+  "message": "Element"
+ },
+ "modeArea": {
+  "message": "Area"
+ },
+ "modeScreen": {
+  "message": "Whole screen"
+ },
+ "cancel": {
+  "message": "Cancel"
+ },
+ "hintElement": {
+  "message": "Click the element with the problem · ↑ parent block · Esc to cancel"
+ },
+ "hintArea": {
+  "message": "Drag over the area with the problem · Esc to cancel"
+ },
+ "toolRect": {
+  "message": "Box"
+ },
+ "toolArrow": {
+  "message": "Arrow"
+ },
+ "toolPen": {
+  "message": "Pen"
+ },
+ "undo": {
+  "message": "Undo"
+ },
+ "newTicket": {
+  "message": "New ticket"
+ },
+ "noSetup": {
+  "message": "Fixproof is not set up yet."
+ },
+ "openSettings": {
+  "message": "Open settings"
+ },
+ "noProject": {
+  "message": "This site is not in any project: choose one."
+ },
+ "project": {
+  "message": "Project"
+ },
+ "title": {
+  "message": "Title"
+ },
+ "titlePlaceholder": {
+  "message": "What is wrong, in a few words"
+ },
+ "description": {
+  "message": "Details"
+ },
+ "descriptionPlaceholder": {
+  "message": "What you expected, steps to repeat…"
+ },
+ "type": {
+  "message": "Type"
+ },
+ "typeBug": {
+  "message": "Bug"
+ },
+ "typeDesign": {
+  "message": "Design"
+ },
+ "typeContent": {
+  "message": "Content"
+ },
+ "typeRequest": {
+  "message": "Request"
+ },
+ "priorityHigh": {
+  "message": "High priority"
+ },
+ "attached": {
+  "message": "Will be attached"
+ },
+ "consoleErrors": {
+  "message": "Console errors"
+ },
+ "catcherOff": {
+  "message": "Console errors are collected only on project sites you allowed in the settings"
+ },
+ "failedRequests": {
+  "message": "Failed requests"
+ },
+ "send": {
+  "message": "Send"
+ },
+ "sending": {
+  "message": "Sending…"
+ },
+ "sent": {
+  "message": "Ticket created:"
+ },
+ "close": {
+  "message": "Close"
+ },
+ "needProject": {
+  "message": "Choose a project"
+ },
+ "needTitle": {
+  "message": "Write a title"
+ },
+ "error": {
+  "message": "Error"
+ },
+ "page": {
+  "message": "Page"
+ },
+ "element": {
+  "message": "Element"
+ },
+ "screen": {
+  "message": "Screen"
+ },
+ "technical": {
+  "message": "Technical details"
+ },
+ "optIntro": {
+  "message": "Bug reports with a screenshot and full context, sent to a GitHub tasks repository."
+ },
+ "optAccount": {
+  "message": "Account"
+ },
+ "optToken": {
+  "message": "GitHub token"
+ },
+ "optTokenHelp": {
+  "message": "A fine-grained token with Issues: read and write and Contents: read and write on your tasks repositories. <a href=\"https://github.com/settings/personal-access-tokens/new\" target=\"_blank\" rel=\"noopener\">Create a token</a>. Stored only in this browser."
+ },
+ "optReporter": {
+  "message": "Your name in tickets"
+ },
+ "optProjects": {
+  "message": "Projects"
+ },
+ "optAdd": {
+  "message": "One tasks repository per project. Sites: the addresses where the button should know which project it is (live, test, local)."
+ },
+ "optProjectsHelp": {
+  "message": "Add project"
+ },
+ "optSave": {
+  "message": "Save"
+ },
+ "optName": {
+  "message": "Name"
+ },
+ "optRepo": {
+  "message": "Tasks repository (owner/name)"
+ },
+ "optOrigins": {
+  "message": "Sites, one per line"
+ },
+ "optTest": {
+  "message": "Test connection"
+ },
+ "optPerm": {
+  "message": "Collect console errors on these sites"
+ },
+ "optDelete": {
+  "message": "Delete"
+ },
+ "optDeleteConfirm": {
+  "message": "Delete this project?"
+ },
+ "optNoOrigins": {
+  "message": "Add at least one site address"
+ },
+ "optPermOk": {
+  "message": "Allowed: console errors will be collected from the next page load"
+ },
+ "optPermNo": {
+  "message": "Not allowed"
+ },
+ "optBadRepo": {
+  "message": "Wrong repository"
+ },
+ "optSaved": {
+  "message": "Saved"
+ },
+ "warnings": {
+  "message": "warnings"
+ }
+}

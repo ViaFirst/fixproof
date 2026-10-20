@@ -1,0 +1,197 @@
+{
+ "extName": {
+  "message": "Fixproof — баги для исправления ИИ"
+ },
+ "extDescription": {
+  "message": "Отмечайте баг на любой странице: элемент, скриншот с пометками и технический контекст сразу попадают в репозиторий задач, готовые для вашего ИИ-агента."
+ },
+ "actionTitle": {
+  "message": "Сообщить о баге (Alt+Shift+B)"
+ },
+ "modeElement": {
+  "message": "Элемент"
+ },
+ "modeArea": {
+  "message": "Область"
+ },
+ "modeScreen": {
+  "message": "Весь экран"
+ },
+ "cancel": {
+  "message": "Отмена"
+ },
+ "hintElement": {
+  "message": "Кликните на элемент с проблемой · ↑ — родительский блок · Esc — отмена"
+ },
+ "hintArea": {
+  "message": "Выделите область с проблемой · Esc — отмена"
+ },
+ "toolRect": {
+  "message": "Рамка"
+ },
+ "toolArrow": {
+  "message": "Стрелка"
+ },
+ "toolPen": {
+  "message": "Карандаш"
+ },
+ "undo": {
+  "message": "Отменить"
+ },
+ "newTicket": {
+  "message": "Новый тикет"
+ },
+ "noSetup": {
+  "message": "Fixproof ещё не настроен."
+ },
+ "openSettings": {
+  "message": "Открыть настройки"
+ },
+ "noProject": {
+  "message": "Этот сайт не привязан к проекту: выберите проект."
+ },
+ "project": {
+  "message": "Проект"
+ },
+ "title": {
+  "message": "Заголовок"
+ },
+ "titlePlaceholder": {
+  "message": "Что не так, в двух словах"
+ },
+ "description": {
+  "message": "Подробности"
+ },
+ "descriptionPlaceholder": {
+  "message": "Что ожидали, как повторить…"
+ },
+ "type": {
+  "message": "Тип"
+ },
+ "typeBug": {
+  "message": "Баг"
+ },
+ "typeDesign": {
+  "message": "Дизайн"
+ },
+ "typeContent": {
+  "message": "Контент"
+ },
+ "typeRequest": {
+  "message": "Запрос"
+ },
+ "priorityHigh": {
+  "message": "Высокий приоритет"
+ },
+ "attached": {
+  "message": "Будет приложено"
+ },
+ "consoleErrors": {
+  "message": "Ошибки консоли"
+ },
+ "catcherOff": {
+  "message": "Ошибки консоли собираются только на сайтах проектов, разрешённых в настройках"
+ },
+ "failedRequests": {
+  "message": "Упавшие запросы"
+ },
+ "send": {
+  "message": "Отправить"
+ },
+ "sending": {
+  "message": "Отправка…"
+ },
+ "sent": {
+  "message": "Тикет создан:"
+ },
+ "close": {
+  "message": "Закрыть"
+ },
+ "needProject": {
+  "message": "Выберите проект"
+ },
+ "needTitle": {
+  "message": "Напишите заголовок"
+ },
+ "error": {
+  "message": "Ошибка"
+ },
+ "page": {
+  "message": "Страница"
+ },
+ "element": {
+  "message": "Элемент"
+ },
+ "screen": {
+  "message": "Экран"
+ },
+ "technical": {
+  "message": "Технические детали"
+ },
+ "optIntro": {
+  "message": "Баг-репорты со скриншотом и полным контекстом, прямо в репозиторий задач на GitHub."
+ },
+ "optAccount": {
+  "message": "Аккаунт"
+ },
+ "optToken": {
+  "message": "Токен GitHub"
+ },
+ "optTokenHelp": {
+  "message": "Fine-grained токен с правами Issues: read and write и Contents: read and write на репозитории задач. <a href=\"https://github.com/settings/personal-access-tokens/new\" target=\"_blank\" rel=\"noopener\">Создать токен</a>. Хранится только в этом браузере."
+ },
+ "optReporter": {
+  "message": "Ваше имя в тикетах"
+ },
+ "optProjects": {
+  "message": "Проекты"
+ },
+ "optAdd": {
+  "message": "Один репозиторий задач на проект. Сайты — адреса, по которым кнопка узнаёт проект (боевой, тестовый, локальный)."
+ },
+ "optProjectsHelp": {
+  "message": "Добавить проект"
+ },
+ "optSave": {
+  "message": "Сохранить"
+ },
+ "optName": {
+  "message": "Название"
+ },
+ "optRepo": {
+  "message": "Репозиторий задач (owner/name)"
+ },
+ "optOrigins": {
+  "message": "Сайты, по одному в строке"
+ },
+ "optTest": {
+  "message": "Проверить подключение"
+ },
+ "optPerm": {
+  "message": "Собирать ошибки консоли на этих сайтах"
+ },
+ "optDelete": {
+  "message": "Удалить"
+ },
+ "optDeleteConfirm": {
+  "message": "Удалить этот проект?"
+ },
+ "optNoOrigins": {
+  "message": "Добавьте хотя бы один адрес сайта"
+ },
+ "optPermOk": {
+  "message": "Разрешено: ошибки консоли собираются со следующей загрузки страницы"
+ },
+ "optPermNo": {
+  "message": "Не разрешено"
+ },
+ "optBadRepo": {
+  "message": "Неверный репозиторий"
+ },
+ "optSaved": {
+  "message": "Сохранено"
+ },
+ "warnings": {
+  "message": "предупр."
+ }
+}

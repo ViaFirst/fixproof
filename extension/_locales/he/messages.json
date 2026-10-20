@@ -1,0 +1,197 @@
+{
+ "extName": {
+  "message": "Fixproof — דיווח באגים לתיקון ע״י AI"
+ },
+ "extDescription": {
+  "message": "סמנו באג בכל עמוד: האלמנט, צילום מסך עם סימונים והקשר טכני נשלחים ישירות למאגר המשימות, מוכנים לסוכן ה-AI שלכם."
+ },
+ "actionTitle": {
+  "message": "דיווח על באג (Alt+Shift+B)"
+ },
+ "modeElement": {
+  "message": "אלמנט"
+ },
+ "modeArea": {
+  "message": "אזור"
+ },
+ "modeScreen": {
+  "message": "כל המסך"
+ },
+ "cancel": {
+  "message": "ביטול"
+ },
+ "hintElement": {
+  "message": "לחצו על האלמנט הבעייתי · ↑ לבלוק ההורה · Esc לביטול"
+ },
+ "hintArea": {
+  "message": "סמנו את האזור הבעייתי · Esc לביטול"
+ },
+ "toolRect": {
+  "message": "מסגרת"
+ },
+ "toolArrow": {
+  "message": "חץ"
+ },
+ "toolPen": {
+  "message": "עט"
+ },
+ "undo": {
+  "message": "בטל פעולה"
+ },
+ "newTicket": {
+  "message": "כרטיס חדש"
+ },
+ "noSetup": {
+  "message": "Fixproof עדיין לא מוגדר."
+ },
+ "openSettings": {
+  "message": "פתיחת ההגדרות"
+ },
+ "noProject": {
+  "message": "האתר לא משויך לפרויקט: בחרו פרויקט."
+ },
+ "project": {
+  "message": "פרויקט"
+ },
+ "title": {
+  "message": "כותרת"
+ },
+ "titlePlaceholder": {
+  "message": "מה לא תקין, בכמה מילים"
+ },
+ "description": {
+  "message": "פרטים"
+ },
+ "descriptionPlaceholder": {
+  "message": "מה ציפיתם, איך לשחזר…"
+ },
+ "type": {
+  "message": "סוג"
+ },
+ "typeBug": {
+  "message": "באג"
+ },
+ "typeDesign": {
+  "message": "עיצוב"
+ },
+ "typeContent": {
+  "message": "תוכן"
+ },
+ "typeRequest": {
+  "message": "בקשה"
+ },
+ "priorityHigh": {
+  "message": "עדיפות גבוהה"
+ },
+ "attached": {
+  "message": "יצורף"
+ },
+ "consoleErrors": {
+  "message": "שגיאות קונסול"
+ },
+ "catcherOff": {
+  "message": "שגיאות קונסול נאספות רק באתרי פרויקטים שאושרו בהגדרות"
+ },
+ "failedRequests": {
+  "message": "בקשות שנכשלו"
+ },
+ "send": {
+  "message": "שליחה"
+ },
+ "sending": {
+  "message": "שולח…"
+ },
+ "sent": {
+  "message": "הכרטיס נוצר:"
+ },
+ "close": {
+  "message": "סגירה"
+ },
+ "needProject": {
+  "message": "בחרו פרויקט"
+ },
+ "needTitle": {
+  "message": "כתבו כותרת"
+ },
+ "error": {
+  "message": "שגיאה"
+ },
+ "page": {
+  "message": "עמוד"
+ },
+ "element": {
+  "message": "אלמנט"
+ },
+ "screen": {
+  "message": "מסך"
+ },
+ "technical": {
+  "message": "פרטים טכניים"
+ },
+ "optIntro": {
+  "message": "דיווחי באגים עם צילום מסך והקשר מלא, ישירות למאגר משימות ב-GitHub."
+ },
+ "optAccount": {
+  "message": "חשבון"
+ },
+ "optToken": {
+  "message": "טוקן GitHub"
+ },
+ "optTokenHelp": {
+  "message": "טוקן fine-grained עם הרשאות Issues: read and write ו-Contents: read and write על מאגרי המשימות. <a href=\"https://github.com/settings/personal-access-tokens/new\" target=\"_blank\" rel=\"noopener\">יצירת טוקן</a>. נשמר רק בדפדפן הזה."
+ },
+ "optReporter": {
+  "message": "השם שלכם בכרטיסים"
+ },
+ "optProjects": {
+  "message": "פרויקטים"
+ },
+ "optAdd": {
+  "message": "מאגר משימות אחד לכל פרויקט. אתרים: הכתובות שלפיהן הכפתור מזהה את הפרויקט (חי, בדיקות, מקומי)."
+ },
+ "optProjectsHelp": {
+  "message": "הוספת פרויקט"
+ },
+ "optSave": {
+  "message": "שמירה"
+ },
+ "optName": {
+  "message": "שם"
+ },
+ "optRepo": {
+  "message": "מאגר משימות (owner/name)"
+ },
+ "optOrigins": {
+  "message": "אתרים, אחד בכל שורה"
+ },
+ "optTest": {
+  "message": "בדיקת חיבור"
+ },
+ "optPerm": {
+  "message": "איסוף שגיאות קונסול באתרים אלה"
+ },
+ "optDelete": {
+  "message": "מחיקה"
+ },
+ "optDeleteConfirm": {
+  "message": "למחוק את הפרויקט?"
+ },
+ "optNoOrigins": {
+  "message": "הוסיפו לפחות כתובת אתר אחת"
+ },
+ "optPermOk": {
+  "message": "אושר: שגיאות קונסול ייאספו מטעינת העמוד הבאה"
+ },
+ "optPermNo": {
+  "message": "לא אושר"
+ },
+ "optBadRepo": {
+  "message": "מאגר שגוי"
+ },
+ "optSaved": {
+  "message": "נשמר"
+ },
+ "warnings": {
+  "message": "אזהרות"
+ }
+}

@@ -127,7 +127,7 @@ macOS the keychain item stored once with `security add-generic-password -s fixpr
 - **Connect from Mesila** (extension 0.3+): board settings → Fixproof → *Connect* sends the extension
   `{ type: "connect", board, name, token, sites? }` via `externally_connectable` (Mesila sites only). The extension
   saves or updates the Mesila project for that board; its address is the sender's origin. `{ type: "ping", board }`
-  answers `{ version, connected }`. Extension ID for unpacked builds: `eflhgelldbgeemklehcbhmedmiemjoka`.
+  answers `{ version, connected }`. Extension ID for unpacked builds: `afohdlecpkmdojkdkeinjjjlbnicignj`.
 - Ticket numbers: `42` or `MSL-42`. Commit with the card ID (`MSL-42`): Mesila links commits, branches and PRs by it.
 - Priority: Mesila's own field; `high` and `urgent` sort first, like the `priority: high` label.
 

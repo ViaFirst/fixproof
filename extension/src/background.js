@@ -1,7 +1,10 @@
 // Service worker: starts the overlay, takes the screenshot, collects the page log, sends tickets.
 import * as github from './backends/github.js';
+import * as mesila from './backends/mesila.js';
 
-const BACKENDS = { github };
+const BACKENDS = { github, mesila };
+// a project can send: GitHub needs the shared token, Mesila its own per-project token
+const canSend = (s, p) => ((p.backend || 'github') === 'mesila' ? !!(p.token && p.url && p.board) : !!s.token);
 const VERSION = chrome.runtime.getManifest().version;
 const CATCHER_ID = 'fixproof-catcher';
 
@@ -58,13 +61,13 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
       case 'context': {
         const s = await getSettings();
         const p = projectFor(s.projects, sender.tab.url);
-        return { project: p || null, projects: s.projects.map(x => ({ id: x.id, name: x.name })), hasToken: !!s.token, reporter: s.reporter, version: VERSION };
+        return { project: p || null, projects: s.projects.map(x => ({ id: x.id, name: x.name })), hasToken: s.projects.some(x => canSend(s, x)), reporter: s.reporter, version: VERSION };
       }
       case 'submit': {
         const s = await getSettings();
         const p = s.projects.find(x => x.id === msg.projectId) || projectFor(s.projects, sender.tab.url);
         if (!p) throw new Error('No project for this site');
-        if (!s.token) throw new Error('No GitHub token in the settings');
+        if (!canSend(s, p)) throw new Error((p.backend || 'github') === 'mesila' ? 'No Mesila address, board or token in the project settings' : 'No GitHub token in the settings');
         return BACKENDS[p.backend || 'github'].createTicket(s, p, rebuild(msg.ticket));
       }
       case 'openOptions': chrome.runtime.openOptionsPage(); return {};
@@ -81,7 +84,7 @@ function rebuild(t) {
   return { ...t, bodyFor: images => renderBody(t, images) };
 }
 function renderBody(t, images) {
-  const L = t.strings, m = { ...t.meta, screenshots: images.map(i => i.path), client: 'fixproof-extension/' + VERSION };
+  const L = t.strings, m = { ...t.meta, screenshots: images.map(i => i.path).filter(Boolean), client: 'fixproof-extension/' + VERSION };
   const esc = s => String(s ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
   const rows = [
     [L.page, `${decodeURI(m.url)}`],

@@ -83,3 +83,47 @@ In the root of the code project (found by walking up from the working directory)
 
 A ticket URL on the live or test origin is mapped to the same path on `reproduceOn` for reproducing and for
 the "after" screenshots.
+
+## Backends
+
+`"backend"` in `.fixproof.json` picks where tickets live (default `github`: the issues of `repo`, as above).
+
+### Mesila
+
+Tickets are cards on a Mesila board (a kanban with AI agents); the description holds the same human
+part and `fixproof:v1` block. The extension creates the card with its screenshot in one request
+(`POST /api/v1/boards/KEY/cards`, multipart; project settings: Mesila address, board key, agent token). It sends the
+GitHub-style labels (`type: bug`, `device: mobile`) plus the bare type (`bug`): Mesila keeps the ones the board has.
+"High priority" sets the card's priority field. The CLI talks to Mesila's MCP endpoint (`/api/mcp`) and uploads screenshots to
+`/api/uploads` with an agent token (Mesila → Settings → AI agents; never written to files): `MESILA_TOKEN`, else on
+macOS the keychain item stored once with `security add-generic-password -s fixproof-mesila -a <mesila-host> -w`.
+
+```json
+{
+  "backend": "mesila",
+  "mesila": {
+    "url": "https://mesila.example.com",
+    "board": "MSL",
+    "label": "bug",
+    "needsInfoLabel": "needs info",
+    "columns": { "fixed": "На проверке" },
+    "locale": "ru"
+  }
+}
+```
+
+- `label` — only cards with this label are tickets (omit to treat every card as one).
+- Status comes from the card's column and one label:
+
+| Status | On the card | Set by |
+|---|---|---|
+| new | any other column (to-do, backlog) | the reporter |
+| in progress | a column with the meaning "in progress" | `fixproof claim` (claim_card: the agent becomes an assignee) |
+| needs info | the `needsInfoLabel` label (created by a board admin; without it only the comment is posted) | `fixproof ask` |
+| fixed on test | `columns.fixed`, else the first column with the meaning "in review" (required for `done`) | `fixproof done` |
+| closed | a column with the meaning "done" | a human |
+
+- `columns` may also name the `new`, `in-progress` and `needs-info` columns explicitly.
+- Ticket numbers: `42` or `MSL-42`. Commit with the card ID (`MSL-42`): Mesila links commits, branches and PRs by it.
+- Priority: Mesila's own field; `high` and `urgent` sort first, like the `priority: high` label.
+

@@ -3,7 +3,7 @@
   "message": "Fixproof — דיווח באגים לתיקון ע״י AI"
  },
  "extDescription": {
-  "message": "סמנו באג בכל עמוד: האלמנט, צילום מסך עם סימונים והקשר טכני נשלחים ישירות למאגר המשימות, מוכנים לסוכן ה-AI שלכם."
+  "message": "סמנו באג בכל עמוד: האלמנט, צילום מסך מסומן והקשר טכני נשלחים ל-GitHub או ללוח Mesila עבור סוכן ה-AI שלכם."
  },
  "actionTitle": {
   "message": "דיווח על באג (Alt+Shift+B)"
@@ -129,7 +129,7 @@
   "message": "פרטים טכניים"
  },
  "optIntro": {
-  "message": "דיווחי באגים עם צילום מסך והקשר מלא, ישירות למאגר משימות ב-GitHub."
+  "message": "דיווחי באגים עם צילום מסך והקשר מלא — למאגר משימות ב-GitHub או ללוח ב-Mesila."
  },
  "optAccount": {
   "message": "חשבון"
@@ -147,10 +147,10 @@
   "message": "פרויקטים"
  },
  "optAdd": {
-  "message": "מאגר משימות אחד לכל פרויקט. אתרים: הכתובות שלפיהן הכפתור מזהה את הפרויקט (חי, בדיקות, מקומי)."
+  "message": "הוספת פרויקט"
  },
  "optProjectsHelp": {
-  "message": "הוספת פרויקט"
+  "message": "פרויקט לכל אתר: הדיווחים נשלחים למאגר המשימות שלו ב-GitHub או ללוח ב-Mesila. אתרים — הכתובות שלפיהן הכפתור מזהה את הפרויקט (חי, בדיקות, מקומי)."
  },
  "optSave": {
   "message": "שמירה"
@@ -193,5 +193,26 @@
  },
  "warnings": {
   "message": "אזהרות"
+ },
+ "optBackend": {
+  "message": "לאן לשלוח"
+ },
+ "optMesilaUrl": {
+  "message": "כתובת Mesila"
+ },
+ "optBoard": {
+  "message": "מפתח הלוח"
+ },
+ "optMesilaToken": {
+  "message": "טוקן Mesila"
+ },
+ "optMesilaTokenHelp": {
+  "message": "טוקן סוכן מ-Mesila ← הגדרות ← סוכני AI ‏(msl_…). נשמר רק בדפדפן הזה."
+ },
+ "optBadMesilaUrl": {
+  "message": "כתובת Mesila חייבת להתחיל ב-http:// או https://"
+ },
+ "optBadBoard": {
+  "message": "מפתח הלוח: 2–10 אותיות לטיניות או ספרות, למשל MSL"
  }
 }

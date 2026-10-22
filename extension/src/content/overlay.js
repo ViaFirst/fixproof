@@ -270,7 +270,7 @@
       try {
         const r = await send({ type: 'submit', projectId: F.project.value, ticket: { title, description: F.description.value, labels, meta: m, strings, images: [{ name: 'before.jpg', dataUrl: image }] } });
         msg.className = 'msg ok';
-        msg.innerHTML = `${esc(t('sent'))} <a href="${esc(r.url)}" target="_blank" rel="noopener">#${r.number} ↗</a>`;
+        msg.innerHTML = `${esc(t('sent'))} <a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.ref || '#' + r.number)} ↗</a>`;
         btn.textContent = t('close'); btn.disabled = false; btn.type = 'button'; btn.onclick = close;
       } catch (err) {
         msg.className = 'msg err'; msg.textContent = t('error') + ': ' + err.message;

@@ -3,7 +3,8 @@
   "name": "__MSG_extName__",
   "short_name": "Fixproof",
   "description": "__MSG_extDescription__",
-  "version": "0.1.0",
+  "version": "0.2.1",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA6Pt4X+O+I5vEV3yPrA/7H/eNp8DfisWjid7lEl6kIOAP2Ci+n/LGdA+9DJoGzPo3HQwVB/Jj74bkmg/T78SHDgDEcr9mnWBsPbiH0ytFh2xOGgb1F/VZFU1zDn2skaWpV6KpixJ99WfyzWmuOA2lqc1DFJilEITd6SB5A20CqodJ28fKiVyk/cz3paPvu/DS/Vi7kwQiBkvz/wnc5/BRNn1Ys6bvrzEPtHc/9RQej3wDAYxxa1HEN/BxGrcwnKCmsjRawF7gHFnBYuivJizEJrKjnXTZDoAXuKW00ZdnOn4OoHrWyZWkdpKeIxXpfSEfoQHMPjCbQ8qc9gkfj113fwIDAQAB",
   "default_locale": "en",
   "minimum_chrome_version": "116",
   "icons": {

@@ -1,4 +1,4 @@
-// Settings: GitHub token, reporter name, projects (site origins -> tasks repository).
+// Settings: GitHub token, reporter name, projects (site origins -> GitHub tasks repository or Mesila board).
 const t = k => chrome.i18n.getMessage(k) || k;
 const send = msg => new Promise((res, rej) => chrome.runtime.sendMessage(msg, r => (r?.ok ? res(r) : rej(new Error(r?.error || 'failed')))));
 document.documentElement.dir = chrome.i18n.getMessage('@@bidi_dir');
@@ -20,11 +20,32 @@ function addProject(p = {}) {
   node.dataset.id = p.id || crypto.randomUUID();
   node.querySelector('[data-k=name]').value = p.name || '';
   node.querySelector('[data-k=repo]').value = p.repo || '';
+  node.querySelector('[data-k=backend]').value = p.backend || 'github';
+  for (const k of ['url', 'board', 'token']) node.querySelector(`[data-k=${k}]`).value = p[k] || '';
+  showBackend(node);
   node.querySelector('[data-k=origins]').value = (p.origins || []).join('\n');
   list.append(node);
   return node;
 }
-const read = node => ({ id: node.dataset.id, backend: 'github', name: node.querySelector('[data-k=name]').value.trim(), repo: node.querySelector('[data-k=repo]').value.trim().replace(/^https:\/\/github\.com\//, '').replace(/\/$/, ''), origins: lines(node.querySelector('[data-k=origins]').value) });
+// only the fields of the chosen backend are shown (and saved)
+function showBackend(node) {
+  const b = node.querySelector('[data-k=backend]').value;
+  node.querySelectorAll('[data-for]').forEach(x => { x.hidden = x.dataset.for !== b; });
+}
+const val = (node, k) => node.querySelector(`[data-k=${k}]`).value.trim();
+const read = node => {
+  const p = { id: node.dataset.id, backend: val(node, 'backend'), name: val(node, 'name'), origins: lines(node.querySelector('[data-k=origins]').value) };
+  if (p.backend === 'mesila') return { ...p, url: val(node, 'url').replace(/\/+$/, ''), board: val(node, 'board').toUpperCase(), token: val(node, 'token') };
+  return { ...p, repo: val(node, 'repo').replace(/^https:\/\/github\.com\//, '').replace(/\/$/, '') };
+};
+// what is wrong with a project, or null
+const invalid = p => {
+  if (p.backend !== 'mesila') return /^[\w.-]+\/[\w.-]+$/.test(p.repo) ? null : t('optBadRepo');
+  if (!/^https?:\/\/[^/\s]+/.test(p.url)) return t('optBadMesilaUrl');
+  if (!/^[A-Z][A-Z0-9]{1,9}$/.test(p.board)) return t('optBadBoard');
+  return null;
+};
+list.addEventListener('change', e => { if (e.target.matches('[data-k=backend]')) showBackend(e.target.closest('.project')); });
 
 list.addEventListener('click', async e => {
   const b = e.target.closest('button[data-act]'); if (!b) return;
@@ -45,9 +66,9 @@ list.addEventListener('click', async e => {
 });
 $('add').addEventListener('click', () => addProject().querySelector('input').focus());
 $('save').addEventListener('click', async () => {
-  const projects = [...list.children].map(read).filter(p => p.name || p.repo);
-  const bad = projects.find(p => !/^[\w.-]+\/[\w.-]+$/.test(p.repo));
-  if (bad) { $('status').textContent = t('optBadRepo') + ': ' + (bad.name || bad.repo || '—'); return; }
+  const projects = [...list.children].map(read).filter(p => p.name || p.repo || p.url);
+  const bad = projects.find(invalid);
+  if (bad) { $('status').textContent = invalid(bad) + ': ' + (bad.name || bad.repo || bad.board || '—'); return; }
   await chrome.storage.local.set({ token: $('token').value.trim(), reporter: $('reporter').value.trim(), projects });
   await send({ type: 'syncCatcher' }).catch(() => {});
   $('status').textContent = t('optSaved');

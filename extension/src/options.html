@@ -30,7 +30,18 @@
   <fieldset class="project">
     <div class="grid">
       <label><span data-i18n="optName"></span><input type="text" data-k="name" placeholder="example.com"></label>
+      <label><span data-i18n="optBackend"></span><select data-k="backend"><option value="github">GitHub Issues</option><option value="mesila">Mesila</option></select></label>
+    </div>
+    <div data-for="github">
       <label><span data-i18n="optRepo"></span><input type="text" data-k="repo" placeholder="owner/tasks-repo" spellcheck="false"></label>
+    </div>
+    <div data-for="mesila" hidden>
+      <div class="grid">
+        <label><span data-i18n="optMesilaUrl"></span><input type="url" data-k="url" placeholder="https://mesila.example.com" spellcheck="false"></label>
+        <label><span data-i18n="optBoard"></span><input type="text" data-k="board" placeholder="MSL" spellcheck="false" autocapitalize="characters"></label>
+      </div>
+      <label><span data-i18n="optMesilaToken"></span><input type="password" data-k="token" autocomplete="off" spellcheck="false" placeholder="msl_…"></label>
+      <p class="help" data-i18n="optMesilaTokenHelp"></p>
     </div>
     <label><span data-i18n="optOrigins"></span><textarea data-k="origins" rows="3" spellcheck="false" placeholder="https://example.com&#10;https://staging.example.com&#10;http://example.local"></textarea></label>
     <div class="row">

@@ -3,7 +3,7 @@
   "message": "Fixproof — bug reports for AI fixing"
  },
  "extDescription": {
-  "message": "Mark a bug on any page: element, annotated screenshot and technical context go straight to your tasks repository, ready for your AI agent."
+  "message": "Mark a bug on any page: element, annotated screenshot and tech context go to your GitHub repo or Mesila board for your AI agent."
  },
  "actionTitle": {
   "message": "Report a bug (Alt+Shift+B)"
@@ -129,7 +129,7 @@
   "message": "Technical details"
  },
  "optIntro": {
-  "message": "Bug reports with a screenshot and full context, sent to a GitHub tasks repository."
+  "message": "Bug reports with a screenshot and full context, sent to a GitHub tasks repository or a Mesila board."
  },
  "optAccount": {
   "message": "Account"
@@ -147,10 +147,10 @@
   "message": "Projects"
  },
  "optAdd": {
-  "message": "One tasks repository per project. Sites: the addresses where the button should know which project it is (live, test, local)."
+  "message": "Add project"
  },
  "optProjectsHelp": {
-  "message": "Add project"
+  "message": "One project per site: tickets go to its GitHub tasks repository or Mesila board. Sites: the addresses where the button should know which project it is (live, test, local)."
  },
  "optSave": {
   "message": "Save"
@@ -193,5 +193,26 @@
  },
  "warnings": {
   "message": "warnings"
+ },
+ "optBackend": {
+  "message": "Tickets go to"
+ },
+ "optMesilaUrl": {
+  "message": "Mesila address"
+ },
+ "optBoard": {
+  "message": "Board key"
+ },
+ "optMesilaToken": {
+  "message": "Mesila token"
+ },
+ "optMesilaTokenHelp": {
+  "message": "An agent token from Mesila → Settings → AI agents (msl_…). Stored only in this browser."
+ },
+ "optBadMesilaUrl": {
+  "message": "Mesila address must start with http:// or https://"
+ },
+ "optBadBoard": {
+  "message": "Board key: 2–10 Latin letters or digits, like MSL"
  }
 }

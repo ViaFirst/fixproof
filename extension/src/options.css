@@ -9,8 +9,8 @@ section{background:var(--card);border:1px solid var(--rule);border-radius:14px;p
 h2{font-size:17px;margin:0 0 12px}
 .head{display:flex;justify-content:space-between;align-items:center}
 label{display:flex;flex-direction:column;gap:5px;font-size:13px;font-weight:600;color:var(--muted);margin-block-end:12px}
-input,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:9px;padding:9px 11px;inline-size:100%}
-input:focus,textarea:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+input,textarea,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:9px;padding:9px 11px;inline-size:100%}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
 .help{font-size:13px;color:var(--muted);margin:-4px 0 12px}.help a{color:inherit}
 button{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:9px;padding:8px 14px}
 button:hover{border-color:var(--ink)}

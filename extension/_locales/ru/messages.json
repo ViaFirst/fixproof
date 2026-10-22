@@ -214,5 +214,8 @@
  },
  "optBadBoard": {
   "message": "Ключ борда: 2–10 латинских букв или цифр, например MSL"
+ },
+ "optFromMesila": {
+  "message": "✓ Подключено из Mesila · {date}"
  }
 }

@@ -214,5 +214,8 @@
  },
  "optBadBoard": {
   "message": "מפתח הלוח: 2–10 אותיות לטיניות או ספרות, למשל MSL"
+ },
+ "optFromMesila": {
+  "message": "✓ חובר מ-Mesila · {date}"
  }
 }

@@ -23,7 +23,8 @@ Nothing is collected in the background, and nothing is collected on sites you di
 To the backend you chose for the project, and nowhere else:
 
 - **GitHub** — an issue in the repository you named, through the GitHub API (`api.github.com`), with your token;
-- **Mesila** — a card on the board you named, on the Mesila address you entered, with your Mesila token.
+- **Mesila** — a card on the board you named, on the Mesila address you entered (or that connected the board when
+  you clicked *Connect* in Mesila), with your Mesila token.
 
 The data is then governed by that service's own terms and privacy policy. ViaFirst does not receive a copy.
 

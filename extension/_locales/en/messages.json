@@ -214,5 +214,8 @@
  },
  "optBadBoard": {
   "message": "Board key: 2–10 Latin letters or digits, like MSL"
+ },
+ "optFromMesila": {
+  "message": "✓ Connected from Mesila · {date}"
  }
 }

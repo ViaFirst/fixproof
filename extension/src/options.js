@@ -22,6 +22,11 @@ function addProject(p = {}) {
   node.querySelector('[data-k=repo]').value = p.repo || '';
   node.querySelector('[data-k=backend]').value = p.backend || 'github';
   for (const k of ['url', 'board', 'token']) node.querySelector(`[data-k=${k}]`).value = p[k] || '';
+  if (p.connectedFrom) {
+    node.dataset.connectedFrom = p.connectedFrom; node.dataset.connectedAt = p.connectedAt || '';
+    const note = node.querySelector('.from'); note.hidden = false;
+    note.textContent = t('optFromMesila').replace('{date}', new Date(p.connectedAt).toLocaleString(chrome.i18n.getUILanguage(), { dateStyle: 'medium', timeStyle: 'short' }));
+  }
   showBackend(node);
   node.querySelector('[data-k=origins]').value = (p.origins || []).join('\n');
   list.append(node);
@@ -35,7 +40,11 @@ function showBackend(node) {
 const val = (node, k) => node.querySelector(`[data-k=${k}]`).value.trim();
 const read = node => {
   const p = { id: node.dataset.id, backend: val(node, 'backend'), name: val(node, 'name'), origins: lines(node.querySelector('[data-k=origins]').value) };
-  if (p.backend === 'mesila') return { ...p, url: val(node, 'url').replace(/\/+$/, ''), board: val(node, 'board').toUpperCase(), token: val(node, 'token') };
+  if (p.backend === 'mesila') {
+    const m = { ...p, url: val(node, 'url').replace(/\/+$/, ''), board: val(node, 'board').toUpperCase(), token: val(node, 'token') };
+    // keep the "connected from Mesila" mark while the address stays the same
+    return node.dataset.connectedFrom === m.url ? { ...m, connectedFrom: m.url, connectedAt: node.dataset.connectedAt } : m;
+  }
   return { ...p, repo: val(node, 'repo').replace(/^https:\/\/github\.com\//, '').replace(/\/$/, '') };
 };
 // what is wrong with a project, or null

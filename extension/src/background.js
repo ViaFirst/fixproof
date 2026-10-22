@@ -79,6 +79,45 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
   return true;
 });
 
+// ---------- Mesila connects a board (MSL-75) ----------
+// Only the Mesila sites in manifest "externally_connectable" can send these messages. The project's Mesila address
+// is the sender's own origin (never taken from the message), so a token is only ever sent back to the site that gave it.
+const KEY_RE = /^[A-Z][A-Z0-9]{1,9}$/;
+export function mesilaProjectFrom(origin, msg, projects) {
+  const board = String(msg.board || '').toUpperCase();
+  if (!KEY_RE.test(board)) throw new Error('bad board key');
+  if (!/^msl_[A-Za-z0-9_-]{16,}$/.test(String(msg.token || ''))) throw new Error('bad token');
+  const sites = (Array.isArray(msg.sites) ? msg.sites : []).flatMap(x => { try { const u = new URL(String(x)); return /^https?:$/.test(u.protocol) ? [u.origin] : []; } catch { return []; } }).slice(0, 20);
+  const same = p => p.backend === 'mesila' && p.url === origin && p.board === board;
+  const old = projects.find(same);
+  const project = {
+    ...(old || { id: crypto.randomUUID(), origins: [] }),
+    backend: 'mesila', url: origin, board, token: msg.token,
+    name: String(msg.name || '').trim().slice(0, 80) || old?.name || board,
+    origins: [...new Set([...(old?.origins || []), ...sites])],
+    connectedFrom: origin, connectedAt: new Date().toISOString(),
+  };
+  return { projects: old ? projects.map(p => (same(p) ? project : p)) : [...projects, project], project, created: !old };
+}
+
+chrome.runtime.onMessageExternal.addListener((msg, sender, reply) => {
+  const origin = sender.origin || (sender.url && new URL(sender.url).origin);
+  (async () => {
+    const { projects } = await getSettings();
+    if (msg?.type === 'ping') {
+      const board = String(msg.board || '').toUpperCase();
+      return { version: VERSION, connected: projects.some(p => p.backend === 'mesila' && p.url === origin && p.board === board) };
+    }
+    if (msg?.type === 'connect') {
+      const r = mesilaProjectFrom(origin, msg, projects);
+      await chrome.storage.local.set({ projects: r.projects });
+      return { version: VERSION, created: r.created, project: { name: r.project.name, board: r.project.board } };
+    }
+    throw new Error('unknown message');
+  })().then(r => reply({ ok: true, ...r }), e => reply({ ok: false, error: e.message }));
+  return true;
+});
+
 // the overlay sends plain data; the body is rendered here, once the screenshot URLs are known
 function rebuild(t) {
   return { ...t, bodyFor: images => renderBody(t, images) };

@@ -137,6 +137,10 @@ showShortcut();
 // Chrome lets only its own page assign shortcuts; re-read when the user comes back
 $('shortcut-change').addEventListener('click', () => chrome.tabs.create({ url: 'chrome://extensions/shortcuts' }));
 document.addEventListener('visibilitychange', () => { if (!document.hidden) showShortcut(); });
+// the shortcut may be changed in another window: follow Chrome's own event and the window getting focus back
+chrome.commands.onChanged?.addListener(showShortcut);
+window.addEventListener('focus', showShortcut);
+setInterval(() => { if (!document.hidden) showShortcut(); }, 3000);
 
 // ---------- outbox (MSL-102) ----------
 const fmtTime = iso => new Date(iso).toLocaleString(chrome.i18n.getUILanguage(), { dateStyle: 'short', timeStyle: 'short' });

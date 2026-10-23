@@ -88,3 +88,44 @@ const s = await chrome.storage.local.get(['token', 'reporter', 'projects']);
 $('token').value = s.token || '';
 $('reporter').value = s.reporter || '';
 (s.projects?.length ? s.projects : [{}]).forEach(addProject);
+
+// ---------- outbox (MSL-102) ----------
+const fmtTime = iso => new Date(iso).toLocaleString(chrome.i18n.getUILanguage(), { dateStyle: 'short', timeStyle: 'short' });
+async function renderOutbox() {
+  const r = await send({ type: 'outboxList' }).catch(() => ({ items: [], sent: [] }));
+  const box = $('outbox');
+  box.replaceChildren();
+  if (!r.items.length) {
+    const li = document.createElement('li'); li.className = 'empty'; li.textContent = t('optOutboxEmpty'); box.append(li);
+  }
+  for (const i of r.items) {
+    const li = document.createElement('li');
+    const title = document.createElement('span'); title.className = 'title'; title.dir = 'auto'; title.textContent = `${i.projectName || ''} · ${i.title}`;
+    const sendBtn = document.createElement('button'); sendBtn.type = 'button'; sendBtn.textContent = t('optOutboxSend');
+    sendBtn.onclick = async () => { sendBtn.disabled = true; await send({ type: 'outboxSend', id: i.id }).catch(() => {}); renderOutbox(); };
+    const del = document.createElement('button'); del.type = 'button'; del.className = 'del'; del.textContent = t('optOutboxDelete');
+    del.onclick = async () => { if (confirm(t('optOutboxDeleteConfirm'))) { await send({ type: 'outboxDelete', id: i.id }); renderOutbox(); } };
+    const meta = document.createElement('span'); meta.className = 'meta' + (i.state === 'action' ? ' err' : '');
+    meta.textContent = [
+      fmtTime(i.createdAt),
+      t('optOutboxTries').replace('{n}', i.attempts),
+      i.state === 'action' ? t('optOutboxNeedsAction') : t('optOutboxNext').replace('{time}', fmtTime(new Date(i.nextAt).toISOString())),
+      i.lastError,
+    ].filter(Boolean).join(' · ');
+    li.append(title, sendBtn, del, meta);
+    box.append(li);
+  }
+  $('sent-wrap').hidden = !r.sent.length;
+  $('sent').replaceChildren(...r.sent.slice(0, 10).map(e => {
+    const li = document.createElement('li');
+    const a = document.createElement(e.url ? 'a' : 'span');
+    if (e.url) { a.href = e.url; a.target = '_blank'; a.rel = 'noopener'; }
+    a.dir = 'auto'; a.textContent = `${e.ref ? e.ref + ' · ' : ''}${e.title}`;
+    const meta = document.createElement('span'); meta.className = 'meta'; meta.textContent = `${e.project || ''} · ${fmtTime(e.at)}${e.attempts > 1 ? ' · ' + t('optOutboxTries').replace('{n}', e.attempts) : ''}`;
+    li.append(a, meta);
+    return li;
+  }));
+}
+renderOutbox();
+chrome.storage.onChanged.addListener(c => { if (c.outbox || c.sentLog) renderOutbox(); });
+

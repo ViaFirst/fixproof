@@ -1,6 +1,7 @@
 // Service worker: starts the overlay, takes the screenshot, collects the page log, sends tickets.
 import * as github from './backends/github.js';
 import * as mesila from './backends/mesila.js';
+import * as outbox from './outbox.js';
 
 const BACKENDS = { github, mesila };
 // a project can send: GitHub needs the shared token, Mesila its own per-project token
@@ -33,6 +34,38 @@ chrome.runtime.onInstalled.addListener(async ({ reason }) => {
 chrome.permissions.onAdded.addListener(syncCatcher);
 chrome.permissions.onRemoved.addListener(syncCatcher);
 chrome.storage.onChanged.addListener(c => { if (c.projects) syncCatcher(); });
+
+// ---------- outbox: tickets that could not be sent yet (MSL-102) ----------
+const t = k => chrome.i18n.getMessage(k) || k;
+async function sendQueued(item) {
+  const s = await getSettings();
+  const p = s.projects.find(x => x.id === item.projectId);
+  if (!p) throw new outbox.SendError(t('outboxNoProject'), { action: true });
+  if (!canSend(s, p)) throw new outbox.SendError(t('outboxNoAccess'), { action: true });
+  return BACKENDS[p.backend || 'github'].createTicket(s, p, rebuild(item.ticket));
+}
+async function notifySent(item, r) {
+  await chrome.notifications.create('sent:' + (r.url || item.id), {
+    type: 'basic', iconUrl: 'icons/128.png', title: t('outboxSentTitle'),
+    message: `${r.ref || (r.number ? '#' + r.number : '')} · ${item.title}`.trim(), priority: 0,
+  }).catch(() => {});
+}
+const runOutbox = (opts = {}) => outbox.process(sendQueued, { onSent: notifySent, ...opts });
+chrome.alarms.onAlarm.addListener(a => { if (a.name === outbox.ALARM_NAME) runOutbox(); });
+chrome.runtime.onStartup.addListener(() => { outbox.sync(); runOutbox(); });
+chrome.runtime.onInstalled.addListener(() => { outbox.sync(); });
+self.addEventListener('online', () => runOutbox());
+chrome.notifications.onClicked.addListener(id => {
+  if (id.startsWith('sent:http')) chrome.tabs.create({ url: id.slice(5) });
+  chrome.notifications.clear(id);
+});
+// settings changed (a token fixed, a board reconnected): tickets waiting for the user get another try
+chrome.storage.onChanged.addListener(async c => {
+  if (c.projects || c.token) {
+    const waiting = (await outbox.list()).filter(i => i.state === 'action').map(i => i.id);
+    if (waiting.length) runOutbox({ force: waiting });
+  }
+});
 
 chrome.action.onClicked.addListener(async tab => {
   if (!/^https?:/.test(tab.url || '')) return;
@@ -68,11 +101,29 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
         const p = s.projects.find(x => x.id === msg.projectId) || projectFor(s.projects, sender.tab.url);
         if (!p) throw new Error('No project for this site');
         if (!canSend(s, p)) throw new Error((p.backend || 'github') === 'mesila' ? 'No Mesila address, board or token in the project settings' : 'No GitHub token in the settings');
-        return BACKENDS[p.backend || 'github'].createTicket(s, p, rebuild(msg.ticket));
+        // every ticket has an id: retries from the outbox reuse it, so the backend never makes a duplicate
+        const id = msg.ticket.id || crypto.randomUUID(), createdAt = new Date().toISOString();
+        const ticket = { ...msg.ticket, id, createdAt, meta: { ...msg.ticket.meta, id } };
+        try {
+          return await BACKENDS[p.backend || 'github'].createTicket(s, p, rebuild(ticket));
+        } catch (e) {
+          // backend down / no answer → keep it and send later; a broken token or board → keep it until fixed
+          if (!e.retry && !e.action) throw e;
+          const state = e.retry ? 'pending' : 'action';
+          await outbox.add({ id, projectId: p.id, projectName: p.name, title: ticket.title, ticket, createdAt, attempts: 1, state, nextAt: Date.now() + outbox.delayFor(1), lastError: e.message, lastTryAt: createdAt });
+          return { queued: true, state, error: e.message };
+        }
       }
       case 'openOptions': chrome.runtime.openOptionsPage(); return {};
       case 'testProject': { const s = await getSettings(); return BACKENDS[msg.project.backend || 'github'].test({ ...s, token: msg.token || s.token }, msg.project); }
       case 'syncCatcher': return { granted: await syncCatcher() };
+      // settings page → outbox: list without screenshots, send now, delete
+      case 'outboxList': return {
+        items: (await outbox.list()).map(({ ticket, ...i }) => ({ ...i, images: ticket.images.length })),
+        sent: await outbox.sentLog(),
+      };
+      case 'outboxSend': await runOutbox({ force: [msg.id] }); return {};
+      case 'outboxDelete': await outbox.remove(msg.id); return {};
     }
     throw new Error('unknown message ' + msg.type);
   })().then(r => reply({ ok: true, ...r }), e => reply({ ok: false, error: e.message }));

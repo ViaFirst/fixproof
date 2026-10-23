@@ -30,6 +30,11 @@ The data is then governed by that service's own terms and privacy policy. ViaFir
 
 ## What is stored in your browser
 
+If the backend cannot be reached when you press *Send*, the ticket (with its screenshot) is kept in the extension's
+local storage and sent automatically later; it is deleted from your device once delivered, or when you delete it
+in *Outbox* in the settings.
+
+
 Your settings — tokens, your name, projects and their site addresses — are kept in the extension's local storage
 (`chrome.storage.local`) on your device. They are not synced and not sent anywhere except as the authorization of
 the requests above. Removing the extension deletes them.

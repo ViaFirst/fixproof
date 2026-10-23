@@ -128,6 +128,10 @@ macOS the keychain item stored once with `security add-generic-password -s fixpr
   `{ type: "connect", board, name, token, sites? }` via `externally_connectable` (Mesila sites only). The extension
   saves or updates the Mesila project for that board; its address is the sender's origin. `{ type: "ping", board }`
   answers `{ version, connected }`. Extension ID for unpacked builds: `afohdlecpkmdojkdkeinjjjlbnicignj`.
+- **Delivery guarantee** (extension 0.4+): every ticket has an `id` (also in the `fixproof:v1` block). If the backend is
+  down, the ticket waits in the extension's outbox and is retried (30 s … 1 h, survives a browser restart). Mesila gets
+  the id as `Idempotency-Key` and answers a repeat with the same card; on GitHub the extension finds the issue whose
+  machine block has the id and finishes it instead of opening another.
 - Ticket numbers: `42` or `MSL-42`. Commit with the card ID (`MSL-42`): Mesila links commits, branches and PRs by it.
 - Priority: Mesila's own field; `high` and `urgent` sort first, like the `priority: high` label.
 

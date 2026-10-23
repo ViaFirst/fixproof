@@ -269,8 +269,14 @@
       const strings = Object.fromEntries(['page', 'element', 'screen', 'consoleErrors', 'warnings', 'failedRequests', 'technical'].map(x => [x, t(x)]));
       try {
         const r = await send({ type: 'submit', projectId: F.project.value, ticket: { title, description: F.description.value, labels, meta: m, strings, images: [{ name: 'before.jpg', dataUrl: image }] } });
-        msg.className = 'msg ok';
-        msg.innerHTML = `${esc(t('sent'))} <a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.ref || '#' + r.number)} ↗</a>`;
+        if (r.queued) {
+          // not sent yet: kept in the outbox, the extension retries by itself (MSL-102)
+          msg.className = r.state === 'action' ? 'msg err' : 'msg ok';
+          msg.textContent = r.state === 'action' ? `${t('queuedAction')} (${r.error})` : t('queued');
+        } else {
+          msg.className = 'msg ok';
+          msg.innerHTML = `${esc(t('sent'))} <a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.ref || '#' + r.number)} ↗</a>`;
+        }
         btn.textContent = t('close'); btn.disabled = false; btn.type = 'button'; btn.onclick = close;
       } catch (err) {
         msg.className = 'msg err'; msg.textContent = t('error') + ': ' + err.message;

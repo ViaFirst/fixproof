@@ -1,18 +1,20 @@
 // Mesila backend: a ticket is a card on a Mesila board (REST /api/v1, see docs/TICKET-FORMAT.md → Backends).
 // Project settings: url (Mesila address), board (KEY), token (agent token msl_…, Mesila → Settings → AI agents).
 // The API answers any origin (Bearer only, no cookies), so no host permission is needed for the Mesila address.
+import { errorFor, SendError } from '../outbox.js';
+
 const base = project => String(project.url || '').trim().replace(/\/+$/, '');
 
 async function call(project, path, init = {}) {
-  if (!project.token) throw new Error('No Mesila token in the project settings');
+  if (!project.token) throw new SendError('No Mesila token in the project settings', { action: true });
   let r;
   try {
-    r = await fetch(base(project) + path, { ...init, headers: { authorization: 'Bearer ' + project.token, ...(init.headers || {}) } });
+    r = await fetch(base(project) + path, { ...init, signal: AbortSignal.timeout(60_000), headers: { authorization: 'Bearer ' + project.token, ...(init.headers || {}) } });
   } catch {
-    throw new Error('Mesila is not reachable at ' + base(project));
+    throw errorFor(0, 'Mesila is not reachable at ' + base(project));
   }
   const data = await r.json().catch(() => null);
-  if (!r.ok || !data?.ok) throw new Error(`Mesila ${r.status}: ${data?.error || r.statusText}`);
+  if (!r.ok || !data?.ok) throw errorFor(r.status, `Mesila ${r.status}: ${data?.error || r.statusText}`);
   return data.data;
 }
 
@@ -35,6 +37,7 @@ export async function createTicket(settings, project, ticket) {
   for (const l of [...labels, ...(type ? [type.slice(6)] : []), ...(project.label ? [project.label] : [])]) form.append('labels', l);
   if (ticket.labels.includes('priority: high')) form.set('priority', 'high');
   for (const img of ticket.images) form.append('files', await (await fetch(img.dataUrl)).blob(), img.name);
-  const card = await call(project, `/api/v1/boards/${encodeURIComponent(project.board)}/cards`, { method: 'POST', body: form });
+  // the same ticket id on every retry: Mesila returns the card it already made instead of a duplicate (MSL-101)
+  const card = await call(project, `/api/v1/boards/${encodeURIComponent(project.board)}/cards`, { method: 'POST', body: form, headers: ticket.id ? { 'idempotency-key': ticket.id } : {} });
   return { number: card.number, ref: card.ref, url: card.url };
 }

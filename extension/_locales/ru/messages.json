@@ -217,5 +217,50 @@
  },
  "optFromMesila": {
   "message": "✓ Подключено из Mesila · {date}"
+ },
+ "queued": {
+  "message": "Сейчас отправить не удалось — тикет сохранён и уйдёт автоматически. Форму можно закрыть."
+ },
+ "queuedAction": {
+  "message": "Сохранено в «Исходящих»: поправьте настройки проекта, и тикет уйдёт"
+ },
+ "outboxSentTitle": {
+  "message": "Fixproof: тикет доставлен"
+ },
+ "outboxNoProject": {
+  "message": "Проект удалён из настроек"
+ },
+ "outboxNoAccess": {
+  "message": "В настройках проекта нет токена или адреса"
+ },
+ "optOutbox": {
+  "message": "Исходящие"
+ },
+ "optOutboxHelp": {
+  "message": "Тикеты, которые пока не удалось отправить. Расширение повторяет отправку само (и после перезапуска браузера); тикет, которому нужно ваше действие, ждёт, пока вы поправите настройки проекта."
+ },
+ "optOutboxEmpty": {
+  "message": "Ничего не ждёт отправки."
+ },
+ "optOutboxSend": {
+  "message": "Отправить сейчас"
+ },
+ "optOutboxDelete": {
+  "message": "Удалить"
+ },
+ "optOutboxDeleteConfirm": {
+  "message": "Удалить этот тикет со скриншотом? Он не был отправлен."
+ },
+ "optOutboxTries": {
+  "message": "попыток: {n}"
+ },
+ "optOutboxNext": {
+  "message": "следующая {time}"
+ },
+ "optOutboxNeedsAction": {
+  "message": "нужно ваше действие"
+ },
+ "optSentRecent": {
+  "message": "Недавно доставлены"
  }
 }

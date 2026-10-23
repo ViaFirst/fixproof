@@ -217,5 +217,50 @@
  },
  "optFromMesila": {
   "message": "✓ חובר מ-Mesila · {date}"
+ },
+ "queued": {
+  "message": "לא ניתן לשלוח כרגע — הכרטיס נשמר ויישלח אוטומטית. אפשר לסגור."
+ },
+ "queuedAction": {
+  "message": "נשמר ב„יוצאים”: תקנו את הגדרות הפרויקט והכרטיס יישלח"
+ },
+ "outboxSentTitle": {
+  "message": "Fixproof: הכרטיס נמסר"
+ },
+ "outboxNoProject": {
+  "message": "הפרויקט הוסר מההגדרות"
+ },
+ "outboxNoAccess": {
+  "message": "אין טוקן או כתובת בהגדרות הפרויקט"
+ },
+ "optOutbox": {
+  "message": "יוצאים"
+ },
+ "optOutboxHelp": {
+  "message": "כרטיסים שעדיין לא נשלחו. התוסף מנסה שוב בעצמו (גם אחרי הפעלה מחדש של הדפדפן); כרטיס שדורש פעולה ממתין עד שתתקנו את הגדרות הפרויקט."
+ },
+ "optOutboxEmpty": {
+  "message": "אין כרטיסים שממתינים."
+ },
+ "optOutboxSend": {
+  "message": "שליחה עכשיו"
+ },
+ "optOutboxDelete": {
+  "message": "מחיקה"
+ },
+ "optOutboxDeleteConfirm": {
+  "message": "למחוק את הכרטיס עם צילום המסך? הוא לא נשלח."
+ },
+ "optOutboxTries": {
+  "message": "ניסיונות: {n}"
+ },
+ "optOutboxNext": {
+  "message": "הבא {time}"
+ },
+ "optOutboxNeedsAction": {
+  "message": "נדרשת פעולה"
+ },
+ "optSentRecent": {
+  "message": "נמסרו לאחרונה"
  }
 }

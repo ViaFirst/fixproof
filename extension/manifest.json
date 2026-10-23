@@ -3,7 +3,7 @@
   "name": "__MSG_extName__",
   "short_name": "Fixproof",
   "description": "__MSG_extDescription__",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoUDne+HPOIli4f55ppb4bd0N3p9hyfklxrx4fj8+V/HsJm65VsSkY7mnm+nB54tYASW1Xg76SMGkFtjBXH9jc0x4tI1M+lRBM+ej4D0GN4UgXFI4C9tTEjGSpKjCBv0lE9sKSMsmBniqzx6tKkcpLvmZVFilS1p6w9j4eedzT32EiZsna+P9Fn/EzHwkhh3qa90HmJe6WeI7RoPfSHSHYk4kgIECC/wZMx/JIEoXtG9p1t+D1aSk3Rs+K+Ll1c6HmbvVqHtiPj8vQVQbbKr4XVtBkNbxAtF24GeH81c90fB1dsWhX6tpj9T0/GTxbFrMk0JqXzJRbfxFC6pAId6wPQIDAQAB",
   "default_locale": "en",
   "minimum_chrome_version": "116",
@@ -28,7 +28,10 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "storage"
+    "storage",
+    "alarms",
+    "notifications",
+    "unlimitedStorage"
   ],
   "host_permissions": [
     "https://api.github.com/*"

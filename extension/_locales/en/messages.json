@@ -217,5 +217,50 @@
  },
  "optFromMesila": {
   "message": "✓ Connected from Mesila · {date}"
+ },
+ "queued": {
+  "message": "Could not send right now — the ticket is saved and will be sent automatically. You can close this."
+ },
+ "queuedAction": {
+  "message": "Saved in the outbox: fix the project settings, then it will be sent"
+ },
+ "outboxSentTitle": {
+  "message": "Fixproof: ticket delivered"
+ },
+ "outboxNoProject": {
+  "message": "The project was removed from the settings"
+ },
+ "outboxNoAccess": {
+  "message": "No token or address in the project settings"
+ },
+ "optOutbox": {
+  "message": "Outbox"
+ },
+ "optOutboxHelp": {
+  "message": "Tickets that could not be sent yet. They are retried automatically (also after a browser restart); a ticket that needs your action waits until the project settings are fixed."
+ },
+ "optOutboxEmpty": {
+  "message": "Nothing waiting."
+ },
+ "optOutboxSend": {
+  "message": "Send now"
+ },
+ "optOutboxDelete": {
+  "message": "Delete"
+ },
+ "optOutboxDeleteConfirm": {
+  "message": "Delete this ticket with its screenshot? It was not sent."
+ },
+ "optOutboxTries": {
+  "message": "tries: {n}"
+ },
+ "optOutboxNext": {
+  "message": "next try {time}"
+ },
+ "optOutboxNeedsAction": {
+  "message": "needs your action"
+ },
+ "optSentRecent": {
+  "message": "Recently delivered"
  }
 }

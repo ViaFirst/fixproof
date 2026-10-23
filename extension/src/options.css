@@ -24,3 +24,12 @@ button.primary{background:var(--acc);border-color:var(--acc);color:#fff;font-wei
 .del{color:#d0103a}
 .bar{position:fixed;inset-block-end:0;inset-inline:0;background:var(--card);border-block-start:1px solid var(--rule);padding:12px 16px;display:flex;gap:14px;align-items:center;justify-content:center}
 #status{font-size:14px;color:var(--muted)}
+.queue{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.queue li{border:1px solid var(--rule);border-radius:10px;padding:10px 12px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;font-size:14px}
+.queue li .title{font-weight:600;flex:1 1 240px;min-inline-size:0}
+.queue li .meta{font-size:12px;color:var(--muted);flex-basis:100%}
+.queue li .meta.err{color:#d0103a}
+.queue li button{font-size:13px;padding:5px 10px}
+.queue.sent li{padding:6px 12px}
+.queue.sent a{color:inherit}
+h3{font-size:14px;margin:16px 0 8px;color:var(--muted)}

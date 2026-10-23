@@ -131,11 +131,8 @@
  "optIntro": {
   "message": "Bug reports with a screenshot and full context, sent to a GitHub tasks repository or a Mesila board."
  },
- "optAccount": {
-  "message": "Account"
- },
  "optToken": {
-  "message": "GitHub token"
+  "message": "GitHub token (only for GitHub projects)"
  },
  "optTokenHelp": {
   "message": "A fine-grained token with Issues: read and write and Contents: read and write on your tasks repositories. <a href=\"https://github.com/settings/personal-access-tokens/new\" target=\"_blank\" rel=\"noopener\">Create a token</a>. Stored only in this browser."
@@ -262,5 +259,35 @@
  },
  "optSentRecent": {
   "message": "Recently delivered"
+ },
+ "optShortcut": {
+  "message": "Keyboard shortcut"
+ },
+ "optShortcutNone": {
+  "message": "Not assigned — the reporter opens only from the toolbar button."
+ },
+ "optShortcutChange": {
+  "message": "Change"
+ },
+ "optShortcutHelp": {
+  "message": "Opens the bug reporter on the current page. Chrome assigns shortcuts on its own page (chrome://extensions/shortcuts); after reinstalling the extension or if another extension took the keys, set it there."
+ },
+ "optGeneral": {
+  "message": "General"
+ },
+ "optProjectNew": {
+  "message": "New project"
+ },
+ "optConnectedShort": {
+  "message": "✓ connected from Mesila"
+ },
+ "optUnsaved": {
+  "message": "Unsaved changes"
+ },
+ "optSource": {
+  "message": "Source code"
+ },
+ "optPrivacy": {
+  "message": "Privacy policy"
  }
 }

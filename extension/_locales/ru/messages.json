@@ -131,11 +131,8 @@
  "optIntro": {
   "message": "Баг-репорты со скриншотом и полным контекстом — в репозиторий задач на GitHub или на борд Mesila."
  },
- "optAccount": {
-  "message": "Аккаунт"
- },
  "optToken": {
-  "message": "Токен GitHub"
+  "message": "Токен GitHub (только для проектов GitHub)"
  },
  "optTokenHelp": {
   "message": "Fine-grained токен с правами Issues: read and write и Contents: read and write на репозитории задач. <a href=\"https://github.com/settings/personal-access-tokens/new\" target=\"_blank\" rel=\"noopener\">Создать токен</a>. Хранится только в этом браузере."
@@ -262,5 +259,35 @@
  },
  "optSentRecent": {
   "message": "Недавно доставлены"
+ },
+ "optShortcut": {
+  "message": "Горячая клавиша"
+ },
+ "optShortcutNone": {
+  "message": "Не назначена — форма открывается только кнопкой на панели."
+ },
+ "optShortcutChange": {
+  "message": "Изменить"
+ },
+ "optShortcutHelp": {
+  "message": "Открывает форму бага на текущей странице. Клавиши Chrome назначает только на своей странице (chrome://extensions/shortcuts): после переустановки расширения или если клавишу занял другой, задайте её там."
+ },
+ "optGeneral": {
+  "message": "Общие"
+ },
+ "optProjectNew": {
+  "message": "Новый проект"
+ },
+ "optConnectedShort": {
+  "message": "✓ подключено из Mesila"
+ },
+ "optUnsaved": {
+  "message": "Есть несохранённые изменения"
+ },
+ "optSource": {
+  "message": "Исходный код"
+ },
+ "optPrivacy": {
+  "message": "Конфиденциальность"
  }
 }

@@ -1,4 +1,4 @@
-// Settings: GitHub token, reporter name, projects (site origins -> GitHub tasks repository or Mesila board).
+// Settings: shortcut, projects (site origins -> GitHub tasks repository or Mesila board), outbox, name and GitHub token.
 const t = k => chrome.i18n.getMessage(k) || k;
 const send = msg => new Promise((res, rej) => chrome.runtime.sendMessage(msg, r => (r?.ok ? res(r) : rej(new Error(r?.error || 'failed')))));
 document.documentElement.dir = chrome.i18n.getMessage('@@bidi_dir');
@@ -29,8 +29,19 @@ function addProject(p = {}) {
   }
   showBackend(node);
   node.querySelector('[data-k=origins]').value = (p.origins || []).join('\n');
+  node.open = !p.id; // saved projects start folded, a new one open
+  summarize(node);
   list.append(node);
   return node;
+}
+// the folded header: name · where tickets go · mark
+function summarize(node) {
+  const p = read(node), bad = invalid(p);
+  node.querySelector('.p-name').textContent = p.name || t('optProjectNew');
+  node.querySelector('.p-where').textContent = p.backend === 'mesila' ? `Mesila · ${p.board || '—'}` : `GitHub · ${p.repo || '—'}`;
+  const mark = node.querySelector('.p-mark');
+  mark.textContent = bad && (p.name || p.repo || p.url) ? bad : p.connectedFrom ? t('optConnectedShort') : '';
+  mark.className = 'p-mark' + (bad ? ' bad' : '');
 }
 // only the fields of the chosen backend are shown (and saved)
 function showBackend(node) {
@@ -55,12 +66,13 @@ const invalid = p => {
   return null;
 };
 list.addEventListener('change', e => { if (e.target.matches('[data-k=backend]')) showBackend(e.target.closest('.project')); });
+list.addEventListener('input', e => { const n = e.target.closest('.project'); if (n) summarize(n); });
 
 list.addEventListener('click', async e => {
   const b = e.target.closest('button[data-act]'); if (!b) return;
   const node = b.closest('.project'), out = node.querySelector('.out'), p = read(node);
   const say = (m, cls = '') => { out.textContent = m; out.className = 'out ' + cls; };
-  if (b.dataset.act === 'del') { if (confirm(t('optDeleteConfirm'))) node.remove(); return; }
+  if (b.dataset.act === 'del') { if (confirm(t('optDeleteConfirm'))) { node.remove(); markDirty(); } return; }
   if (b.dataset.act === 'test') {
     say('…');
     try { const r = await send({ type: 'testProject', project: p, token: $('token').value.trim() }); say(`✓ ${r.name}${r.private ? ' (private)' : ''}`, 'ok'); }
@@ -74,12 +86,30 @@ list.addEventListener('click', async e => {
   }
 });
 $('add').addEventListener('click', () => addProject().querySelector('input').focus());
+// ---------- unsaved changes ----------
+const collect = () => ({ token: $('token').value.trim(), reporter: $('reporter').value.trim(), projects: [...list.children].map(read).filter(p => p.name || p.repo || p.url) });
+let saved = '';
+function markDirty() {
+  const dirty = JSON.stringify(collect()) !== saved;
+  $('dirty').hidden = !dirty;
+  $('save').disabled = !dirty;
+  return dirty;
+}
+document.addEventListener('input', markDirty);
+document.addEventListener('change', markDirty);
+window.addEventListener('beforeunload', e => { if (markDirty()) e.preventDefault(); });
+
 $('save').addEventListener('click', async () => {
-  const projects = [...list.children].map(read).filter(p => p.name || p.repo || p.url);
-  const bad = projects.find(invalid);
-  if (bad) { $('status').textContent = invalid(bad) + ': ' + (bad.name || bad.repo || bad.board || '—'); return; }
-  await chrome.storage.local.set({ token: $('token').value.trim(), reporter: $('reporter').value.trim(), projects });
+  const data = collect();
+  const badNode = [...list.children].find(n => { const p = read(n); return (p.name || p.repo || p.url) && invalid(p); });
+  if (badNode) {
+    const p = read(badNode); badNode.open = true;
+    $('status').textContent = invalid(p) + ': ' + (p.name || p.repo || p.board || '—');
+    return;
+  }
+  await chrome.storage.local.set(data);
   await send({ type: 'syncCatcher' }).catch(() => {});
+  saved = JSON.stringify(data); markDirty();
   $('status').textContent = t('optSaved');
   setTimeout(() => { $('status').textContent = ''; }, 2500);
 });
@@ -88,6 +118,25 @@ const s = await chrome.storage.local.get(['token', 'reporter', 'projects']);
 $('token').value = s.token || '';
 $('reporter').value = s.reporter || '';
 (s.projects?.length ? s.projects : [{}]).forEach(addProject);
+saved = JSON.stringify(collect()); markDirty();
+// settings changed elsewhere (a board connected from Mesila) while nothing is edited here: show them
+chrome.storage.onChanged.addListener(c => {
+  if (!c.projects || markDirty()) return;
+  list.replaceChildren(); (c.projects.newValue || []).forEach(addProject); saved = JSON.stringify(collect()); markDirty();
+});
+
+// ---------- version and shortcut ----------
+const ver = chrome.runtime.getManifest().version;
+$('version').textContent = ver; $('footer-ver').textContent = 'Fixproof ' + ver;
+async function showShortcut() {
+  const cmd = (await chrome.commands.getAll()).find(c => c.name === '_execute_action');
+  $('shortcut').textContent = cmd?.shortcut || '';
+  $('shortcut-none').hidden = !!cmd?.shortcut;
+}
+showShortcut();
+// Chrome lets only its own page assign shortcuts; re-read when the user comes back
+$('shortcut-change').addEventListener('click', () => chrome.tabs.create({ url: 'chrome://extensions/shortcuts' }));
+document.addEventListener('visibilitychange', () => { if (!document.hidden) showShortcut(); });
 
 // ---------- outbox (MSL-102) ----------
 const fmtTime = iso => new Date(iso).toLocaleString(chrome.i18n.getUILanguage(), { dateStyle: 'short', timeStyle: 'short' });

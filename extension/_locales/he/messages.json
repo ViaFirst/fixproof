@@ -131,11 +131,8 @@
  "optIntro": {
   "message": "דיווחי באגים עם צילום מסך והקשר מלא — למאגר משימות ב-GitHub או ללוח ב-Mesila."
  },
- "optAccount": {
-  "message": "חשבון"
- },
  "optToken": {
-  "message": "טוקן GitHub"
+  "message": "טוקן GitHub (רק לפרויקטי GitHub)"
  },
  "optTokenHelp": {
   "message": "טוקן fine-grained עם הרשאות Issues: read and write ו-Contents: read and write על מאגרי המשימות. <a href=\"https://github.com/settings/personal-access-tokens/new\" target=\"_blank\" rel=\"noopener\">יצירת טוקן</a>. נשמר רק בדפדפן הזה."
@@ -262,5 +259,35 @@
  },
  "optSentRecent": {
   "message": "נמסרו לאחרונה"
+ },
+ "optShortcut": {
+  "message": "קיצור מקשים"
+ },
+ "optShortcutNone": {
+  "message": "לא הוגדר — הטופס נפתח רק מהכפתור בסרגל."
+ },
+ "optShortcutChange": {
+  "message": "שינוי"
+ },
+ "optShortcutHelp": {
+  "message": "פותח את טופס הבאג בעמוד הנוכחי. Chrome מגדיר קיצורים רק בעמוד שלו (chrome://extensions/shortcuts): אחרי התקנה מחדש או אם תוסף אחר תפס את המקשים, הגדירו שם."
+ },
+ "optGeneral": {
+  "message": "כללי"
+ },
+ "optProjectNew": {
+  "message": "פרויקט חדש"
+ },
+ "optConnectedShort": {
+  "message": "✓ חובר מ-Mesila"
+ },
+ "optUnsaved": {
+  "message": "יש שינויים שלא נשמרו"
+ },
+ "optSource": {
+  "message": "קוד מקור"
+ },
+ "optPrivacy": {
+  "message": "פרטיות"
  }
 }

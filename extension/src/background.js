@@ -2,6 +2,7 @@
 import * as github from './backends/github.js';
 import * as mesila from './backends/mesila.js';
 import * as outbox from './outbox.js';
+import { applySnapshot, buildSnapshot, mesilaHome } from './backup.js';
 
 const BACKENDS = { github, mesila };
 // a project can send: GitHub needs the shared token, Mesila its own per-project token
@@ -125,6 +126,20 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
       };
       case 'outboxSend': await runOutbox({ force: [msg.id] }); return {};
       case 'outboxDelete': await outbox.remove(msg.id); return {};
+      // settings backup (MSL-321): save with a key of a project on that Mesila; without one the Mesila page saves it
+      case 'backupStatus': case 'backupSave': {
+        const s = await getSettings();
+        const home = mesilaHome(s.projects);
+        const p = s.projects.find(x => x.backend === 'mesila' && x.url === home && x.token);
+        if (!p) return { home, noKey: true };
+        if (msg.type === 'backupStatus') return { home, ...(await mesila.savedSettings(p)) };
+        return { home, ...(await mesila.saveSettings(p, { ...buildSnapshot(s, home), version: VERSION })) };
+      }
+      case 'importFile': {
+        const { count, ...next } = applySnapshot(await getSettings(), msg.data);
+        await chrome.storage.local.set(next);
+        return { count };
+      }
     }
     throw new Error('unknown message ' + msg.type);
   })().then(r => reply({ ok: true, ...r }), e => reply({ ok: false, error: e.message }));
@@ -190,6 +205,17 @@ chrome.runtime.onMessageExternal.addListener((msg, sender, reply) => {
       const r = mesilaProjectFrom(origin, msg, projects);
       await chrome.storage.local.set({ projects: r.projects });
       return { version: VERSION, created: r.created, project: { name: r.project.name, board: r.project.board } };
+    }
+    // settings backup (MSL-321): the Mesila page saves what it gets here (never the secrets: those go only by
+    // the key, from the settings page) and restores with new keys for its own boards
+    if (msg?.type === 'export') {
+      const { snapshot } = buildSnapshot(await getSettings(), origin);
+      return { version: VERSION, snapshot };
+    }
+    if (msg?.type === 'restore') {
+      const { count, ...next } = applySnapshot(await getSettings(), msg, origin);
+      await chrome.storage.local.set(next);
+      return { version: VERSION, projects: count };
     }
     throw new Error('unknown message');
   })().then(r => reply({ ok: true, ...r }), e => reply({ ok: false, error: e.message }));

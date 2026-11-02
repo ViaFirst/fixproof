@@ -1,6 +1,6 @@
 # Fixproof — Privacy Policy
 
-*Last updated: 22 October 2026. Publisher: ViaFirst.*
+*Last updated: 2 November 2026. Publisher: ViaFirst.*
 
 Fixproof is a browser extension for reporting bugs on web pages. It has no servers of its own, no analytics and no
 tracking. It sends data only when **you** press *Send*, and only to the place **you** configured.
@@ -37,7 +37,16 @@ in *Outbox* in the settings.
 
 Your settings — tokens, your name, projects and their site addresses — are kept in the extension's local storage
 (`chrome.storage.local`) on your device. They are not synced and not sent anywhere except as the authorization of
-the requests above. Removing the extension deletes them.
+the requests above, or when you back them up yourself (below). Removing the extension deletes them.
+
+## Backup (only when you press it)
+
+- **Save to Mesila** sends your settings to your own Mesila account (the Mesila address of your projects, with your
+  Mesila key): projects, site addresses, boards, your name. Keys of that Mesila's boards are not sent — Mesila gives
+  new ones when you press *Restore*. The GitHub token and keys for other Mesila addresses are sent too and Mesila
+  keeps them encrypted; they come back only into the extension, from your signed-in Mesila page. You can delete the
+  saved copy in Mesila → AI agents.
+- **Export to a file** saves the settings, tokens included, to a file on your device; nothing is sent anywhere.
 
 ## What we do not do
 
@@ -53,8 +62,10 @@ Questions: open an issue at https://github.com/ViaFirst/fixproof/issues.
 **Кратко по-русски.** Fixproof ничего не собирает в фоне и не имеет своих серверов. Скриншот, адрес страницы,
 выбранный элемент, ошибки консоли (только на разрешённых вами сайтах) и упавшие запросы уходят только по кнопке
 «Отправить» и только туда, куда вы настроили: в ваш репозиторий GitHub или на ваш борд Mesila. Токены и настройки
-хранятся только в этом браузере.
+хранятся только в этом браузере — кроме резервной копии, которую вы сами сохраняете в своём аккаунте Mesila
+(ключи бордов туда не попадают, остальные токены хранятся зашифрованными) или в файл.
 
 **בקצרה בעברית.** Fixproof לא אוסף דבר ברקע ואין לו שרתים משלו. צילום המסך, כתובת העמוד, האלמנט שנבחר, שגיאות
 הקונסול (רק באתרים שאישרתם) ובקשות שנכשלו נשלחים רק בלחיצה על "שליחה", ורק ליעד שהגדרתם: מאגר GitHub או לוח
-Mesila שלכם. הטוקנים וההגדרות נשמרים רק בדפדפן הזה.
+Mesila שלכם. הטוקנים וההגדרות נשמרים רק בדפדפן הזה — מלבד גיבוי שאתם עצמכם שומרים בחשבון Mesila שלכם
+(מפתחות הלוחות לא נשמרים שם, שאר הטוקנים נשמרים מוצפנים) או בקובץ.

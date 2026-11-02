@@ -301,5 +301,50 @@
  },
  "mesilaUnreachable": {
   "message": "Mesila недоступна по адресу {url}. Если адрес устарел, поправьте его в настройках проекта или подключите борд заново из Mesila; иначе тикет уйдёт, когда Mesila снова ответит"
+ },
+ "optBackup": {
+  "message": "Резервная копия"
+ },
+ "optBackupHelp": {
+  "message": "Сохраните эти настройки в своём аккаунте Mesila и верните одним кликом после переустановки или в новом браузере. Ключи бордов не хранятся: при возврате Mesila выдаёт новые."
+ },
+ "optBackupSave": {
+  "message": "Сохранить в Mesila"
+ },
+ "optBackupRestore": {
+  "message": "Вернуть из Mesila"
+ },
+ "optExport": {
+  "message": "Экспорт в файл"
+ },
+ "optImport": {
+  "message": "Импорт из файла"
+ },
+ "optAllowSites": {
+  "message": "Разрешить все сайты проектов"
+ },
+ "optExportHelp": {
+  "message": "В файле есть токен GitHub и ключи Mesila: храните его как пароль."
+ },
+ "optBackupSavedAt": {
+  "message": "Сохранено в Mesila {date}: проектов — {n}."
+ },
+ "optBackupNoKey": {
+  "message": "Здесь ещё не подключён ни один борд Mesila: «Сохранить» и «Вернуть» откроют Mesila → ИИ-агенты → «Настройки Fixproof в аккаунте»."
+ },
+ "optBackupSaveFirst": {
+  "message": "Сначала сохраните изменения."
+ },
+ "optBackupSaved": {
+  "message": "✓ Сохранено в Mesila: проектов — {n}."
+ },
+ "optBackupOpened": {
+  "message": "Mesila открыта в новой вкладке: нажмите там кнопку в блоке «Настройки Fixproof в аккаунте» (войдите, если попросит)."
+ },
+ "optImported": {
+  "message": "✓ Импортировано проектов: {n}. Разрешите сайты проектов, чтобы собирать журнал страницы."
+ },
+ "optImportBad": {
+  "message": "Это не файл настроек Fixproof."
  }
 }

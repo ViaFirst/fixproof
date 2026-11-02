@@ -301,5 +301,50 @@
  },
  "mesilaUnreachable": {
   "message": "Mesila is not reachable at {url}. If the address is old, fix it in the project settings or connect the board again from Mesila; otherwise the ticket will be sent when Mesila is back"
+ },
+ "optBackup": {
+  "message": "Backup"
+ },
+ "optBackupHelp": {
+  "message": "Save these settings in your Mesila account and bring them back with one click after a reinstall or in a new browser. Board keys are not stored: Mesila gives new ones on restore."
+ },
+ "optBackupSave": {
+  "message": "Save to Mesila"
+ },
+ "optBackupRestore": {
+  "message": "Restore from Mesila"
+ },
+ "optExport": {
+  "message": "Export to a file"
+ },
+ "optImport": {
+  "message": "Import from a file"
+ },
+ "optAllowSites": {
+  "message": "Allow all project sites"
+ },
+ "optExportHelp": {
+  "message": "The file holds the GitHub token and the Mesila keys: keep it like a password."
+ },
+ "optBackupSavedAt": {
+  "message": "Saved in Mesila {date}: {n} projects."
+ },
+ "optBackupNoKey": {
+  "message": "No Mesila board is connected here yet: Save and Restore open Mesila → AI agents → Fixproof settings."
+ },
+ "optBackupSaveFirst": {
+  "message": "Save the changes first."
+ },
+ "optBackupSaved": {
+  "message": "✓ Saved in Mesila: {n} projects."
+ },
+ "optBackupOpened": {
+  "message": "Mesila is open in a new tab: press the button in “Fixproof settings in your account” there (sign in if asked)."
+ },
+ "optImported": {
+  "message": "✓ Imported: {n} projects. Allow the project sites to collect the page log."
+ },
+ "optImportBad": {
+  "message": "This is not a Fixproof settings file."
  }
 }

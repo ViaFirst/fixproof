@@ -301,5 +301,50 @@
  },
  "mesilaUnreachable": {
   "message": "Mesila לא זמינה בכתובת {url}. אם הכתובת ישנה, תקנו אותה בהגדרות הפרויקט או חברו את הלוח מחדש מתוך Mesila; אחרת הכרטיס יישלח כש־Mesila תחזור"
+ },
+ "optBackup": {
+  "message": "גיבוי"
+ },
+ "optBackupHelp": {
+  "message": "שמרו את ההגדרות האלה בחשבון Mesila שלכם והחזירו אותן בלחיצה אחת אחרי התקנה מחדש או בדפדפן חדש. מפתחות הלוחות לא נשמרים: בשחזור Mesila מנפיקה חדשים."
+ },
+ "optBackupSave": {
+  "message": "שמירה ב-Mesila"
+ },
+ "optBackupRestore": {
+  "message": "שחזור מ-Mesila"
+ },
+ "optExport": {
+  "message": "ייצוא לקובץ"
+ },
+ "optImport": {
+  "message": "ייבוא מקובץ"
+ },
+ "optAllowSites": {
+  "message": "לאשר את כל אתרי הפרויקטים"
+ },
+ "optExportHelp": {
+  "message": "בקובץ יש את אסימון GitHub ואת מפתחות Mesila: שמרו עליו כמו על סיסמה."
+ },
+ "optBackupSavedAt": {
+  "message": "נשמר ב-Mesila {date}: {n} פרויקטים."
+ },
+ "optBackupNoKey": {
+  "message": "עדיין לא חובר כאן אף לוח Mesila: „שמירה” ו„שחזור” יפתחו את Mesila ← סוכני AI ← „הגדרות Fixproof בחשבון”."
+ },
+ "optBackupSaveFirst": {
+  "message": "קודם שמרו את השינויים."
+ },
+ "optBackupSaved": {
+  "message": "✓ נשמר ב-Mesila: {n} פרויקטים."
+ },
+ "optBackupOpened": {
+  "message": "Mesila נפתחה בלשונית חדשה: לחצו שם על הכפתור בבלוק „הגדרות Fixproof בחשבון” (התחברו אם תתבקשו)."
+ },
+ "optImported": {
+  "message": "✓ יובאו {n} פרויקטים. אשרו את אתרי הפרויקטים כדי לאסוף את יומן הדף."
+ },
+ "optImportBad": {
+  "message": "זה לא קובץ הגדרות של Fixproof."
  }
 }

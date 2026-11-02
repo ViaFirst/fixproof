@@ -1,3 +1,4 @@
+import { buildSnapshot } from './backup.js';
 // Settings: shortcut, projects (site origins -> GitHub tasks repository or Mesila board), outbox, name and GitHub token.
 const t = k => chrome.i18n.getMessage(k) || k;
 const send = msg => new Promise((res, rej) => chrome.runtime.sendMessage(msg, r => (r?.ok ? res(r) : rej(new Error(r?.error || 'failed')))));
@@ -120,9 +121,11 @@ $('reporter').value = s.reporter || '';
 (s.projects?.length ? s.projects : [{}]).forEach(addProject);
 saved = JSON.stringify(collect()); markDirty();
 // settings changed elsewhere (a board connected from Mesila) while nothing is edited here: show them
-chrome.storage.onChanged.addListener(c => {
-  if (!c.projects || markDirty()) return;
-  list.replaceChildren(); (c.projects.newValue || []).forEach(addProject); saved = JSON.stringify(collect()); markDirty();
+chrome.storage.onChanged.addListener(async c => {
+  if (!(c.projects || c.token || c.reporter) || markDirty()) return;
+  const n = await chrome.storage.local.get(['token', 'reporter', 'projects']);
+  $('token').value = n.token || ''; $('reporter').value = n.reporter || '';
+  list.replaceChildren(); (n.projects || []).forEach(addProject); saved = JSON.stringify(collect()); markDirty();
 });
 
 // ---------- version and shortcut ----------
@@ -182,3 +185,57 @@ async function renderOutbox() {
 renderOutbox();
 chrome.storage.onChanged.addListener(c => { if (c.outbox || c.sentLog) renderOutbox(); });
 
+
+// ---------- backup: Mesila account and file (MSL-321) ----------
+const backupOut = $('backup-out');
+const sayBackup = (m, cls = '') => { backupOut.textContent = m; backupOut.className = 'msg ' + cls; };
+const lang = (l => (['ru', 'he'].includes(l) ? l : 'en'))(chrome.i18n.getUILanguage().slice(0, 2));
+const mesilaPage = home => `${home}/${lang}/settings/agents#fixproof`;
+const stored = () => chrome.storage.local.get(['token', 'reporter', 'projects']);
+async function showBackup() {
+  const r = await send({ type: 'backupStatus' }).catch(() => null);
+  if (r?.saved) sayBackup(t('optBackupSavedAt').replace('{date}', fmtTime(r.updated_at)).replace('{n}', r.snapshot.projects.length));
+  else if (r?.noKey) sayBackup(t('optBackupNoKey'));
+}
+showBackup();
+$('backup-save').addEventListener('click', async () => {
+  if (markDirty()) return sayBackup(t('optBackupSaveFirst'), 'err');
+  sayBackup('…');
+  try {
+    const r = await send({ type: 'backupSave' });
+    if (r.noKey) { chrome.tabs.create({ url: mesilaPage(r.home) }); return sayBackup(t('optBackupOpened'), 'ok'); }
+    sayBackup(t('optBackupSaved').replace('{n}', r.projects), 'ok');
+  } catch (err) { sayBackup(err.message, 'err'); }
+});
+// a clean profile has no key: Mesila restores from its own page (signed in), with new keys for its boards
+$('backup-restore').addEventListener('click', async () => {
+  const r = await send({ type: 'backupStatus' }).catch(() => ({ home: 'https://mesila.firstmark.app' }));
+  chrome.tabs.create({ url: mesilaPage(r.home) });
+  sayBackup(t('optBackupOpened'), 'ok');
+});
+$('export').addEventListener('click', async () => {
+  if (markDirty()) return sayBackup(t('optBackupSaveFirst'), 'err');
+  const body = { fixproof: 'settings', version: ver, exportedAt: new Date().toISOString(), ...buildSnapshot(await stored()) };
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(body, null, 2)], { type: 'application/json' }));
+  a.download = `fixproof-settings-${body.exportedAt.slice(0, 10)}.json`;
+  a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+});
+$('import').addEventListener('click', () => $('import-file').click());
+$('import-file').addEventListener('change', async e => {
+  const f = e.target.files?.[0]; e.target.value = '';
+  if (!f) return;
+  try {
+    const data = JSON.parse(await f.text());
+    if (data?.fixproof !== 'settings') throw new Error(t('optImportBad'));
+    const r = await send({ type: 'importFile', data });
+    sayBackup(t('optImported').replace('{n}', r.count), 'ok');
+  } catch (err) { sayBackup(err instanceof SyntaxError ? t('optImportBad') : err.message, 'err'); }
+});
+// after a restore the sites have to be allowed again: one click for all of them (a user gesture)
+$('allow-sites').addEventListener('click', async () => {
+  const origins = [...new Set(patterns(((await stored()).projects || []).flatMap(p => p.origins || [])))];
+  if (!origins.length) return sayBackup(t('optNoOrigins'), 'err');
+  const ok = await chrome.permissions.request({ origins });
+  sayBackup(ok ? t('optPermOk') : t('optPermNo'), ok ? 'ok' : 'err');
+});

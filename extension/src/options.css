@@ -21,7 +21,9 @@ button.primary{background:var(--acc);border-color:var(--acc);color:#fff;font-wei
 @media (max-width:600px){.grid{grid-template-columns:1fr}}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .out{font-size:13px;color:var(--muted);flex:1}
-.out.ok{color:#0a8a43}.out.err{color:#d0103a}
+.out.ok,.msg.ok{color:#0a8a43}.out.err,.msg.err{color:#d0103a}
+.msg{font-size:13px;color:var(--muted);margin:10px 0 8px}
+.msg:empty{display:none}
 .del{color:#d0103a}
 .bar{position:fixed;inset-block-end:0;inset-inline:0;background:var(--card);border-block-start:1px solid var(--rule);padding:12px 16px;display:flex;gap:14px;align-items:center;justify-content:center}
 #status{font-size:14px;color:var(--muted)}

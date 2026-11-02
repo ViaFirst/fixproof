@@ -132,6 +132,13 @@ macOS the keychain item stored once with `security add-generic-password -s fixpr
   Mesila sites: `https://mesila.firstmark.app` (since extension 0.4.4; projects saved from the old
   `mesila-rho.vercel.app` move to it by themselves) and `http://localhost:3000` for development. A new Mesila address
   needs an extension release first: the saved address is the origin, and other sites cannot connect.
+- **Settings backup** (extension 0.5.0+, Mesila MSL-321): snapshot `{ v: 1, reporter, projects }` without tokens; a
+  project on the Mesila it is saved to has `here: true` and no `url`. Secrets apart: `{ github, tokens: { projectId } }`.
+  The extension saves with a board key: `PUT /api/v1/me/fixproof-settings { snapshot, secrets, version }` (Mesila keeps
+  secrets encrypted; `GET` answers without them). Mesila → AI agents asks the extension `{ type: "export" }` →
+  `{ version, snapshot }` (no secrets) and restores with `{ type: "restore", snapshot, secrets, tokens, skipped }` →
+  `{ version, projects }`: `here` projects get the sender's origin and the new keys from `tokens`. A file export is
+  `{ fixproof: "settings", version, exportedAt, snapshot, secrets }` with every key in `secrets.tokens`.
 - **Mesila's answer** (extension 0.4.4+): `agent_task` (the board's "Fixproof → AI" rule gave the card to this agent)
   and `replayed` (a repeat found the card already made) are shown next to the card link and in the "delivered"
   notification. An address that answers with something other than Mesila's JSON is reported as a wrong address.

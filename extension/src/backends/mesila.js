@@ -49,3 +49,8 @@ export async function createTicket(settings, project, ticket) {
   // agent: the board's "Fixproof → AI" rule gave the card to this agent; replayed: a retry found the card already made
   return { number: card.number, ref: card.ref, url: card.url, agent: card.agent_task || null, replayed: !!card.replayed };
 }
+
+// settings backup in the key owner's Mesila account (MSL-321): no secrets come back, only what is saved and when
+export const saveSettings = (project, body) =>
+  call(project, '/api/v1/me/fixproof-settings', { method: 'PUT', body: JSON.stringify(body), headers: { 'content-type': 'application/json' } });
+export const savedSettings = project => call(project, '/api/v1/me/fixproof-settings');

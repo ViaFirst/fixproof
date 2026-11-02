@@ -39,6 +39,21 @@
     </div>
   </section>
 
+  <section id="backup-section">
+    <h2 data-i18n="optBackup"></h2>
+    <p class="help" data-i18n="optBackupHelp"></p>
+    <div class="row">
+      <button type="button" id="backup-save" data-i18n="optBackupSave"></button>
+      <button type="button" id="backup-restore" data-i18n="optBackupRestore"></button>
+      <button type="button" id="export" data-i18n="optExport"></button>
+      <button type="button" id="import" data-i18n="optImport"></button>
+      <input type="file" id="import-file" accept="application/json,.json" hidden>
+      <button type="button" id="allow-sites" data-i18n="optAllowSites"></button>
+    </div>
+    <p id="backup-out" class="msg" role="status" aria-live="polite"></p>
+    <p class="help" data-i18n="optExportHelp"></p>
+  </section>
+
   <section>
     <h2 data-i18n="optGeneral"></h2>
     <label><span data-i18n="optReporter"></span><input type="text" id="reporter" placeholder="Dana"></label>

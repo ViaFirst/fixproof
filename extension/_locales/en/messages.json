@@ -204,7 +204,7 @@
   "message": "Mesila token"
  },
  "optMesilaTokenHelp": {
-  "message": "An agent token from Mesila → Settings → AI agents (msl_…). Stored only in this browser."
+  "message": "An access key from Mesila → API keys (msl_…), or connect the board from Mesila: board settings → Fixproof. Stored only in this browser."
  },
  "optBadMesilaUrl": {
   "message": "Mesila address must start with http:// or https://"
@@ -289,5 +289,17 @@
  },
  "optPrivacy": {
   "message": "Privacy policy"
+ },
+ "mesilaNotHere": {
+  "message": "Mesila does not answer at {url} (HTTP {status}): check the Mesila address in the project settings or connect the board again from Mesila"
+ },
+ "sentAgent": {
+  "message": "given to {agent}"
+ },
+ "sentReplayed": {
+  "message": "it was already created"
+ },
+ "mesilaUnreachable": {
+  "message": "Mesila is not reachable at {url}. If the address is old, fix it in the project settings or connect the board again from Mesila; otherwise the ticket will be sent when Mesila is back"
  }
 }

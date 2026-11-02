@@ -52,7 +52,7 @@
     .btn.primary{background:${RED};color:#fff;flex:1}.btn.primary:hover{filter:brightness(1.08)}.btn.primary[disabled]{opacity:.5;cursor:default}
     .btn.ghost{background:#eef0f3;color:#111}
     .msg{font-size:13px;line-height:1.5}.msg.err{color:#c4002b}.msg.ok{color:#0a7a3b}
-    .msg a{color:inherit;font-weight:700}
+    .msg a{color:inherit;font-weight:700}.msg .link{all:unset;cursor:pointer;text-decoration:underline;font-weight:700}
     .warn{font-size:13px;background:#fff4d6;border-radius:9px;padding:9px 11px;line-height:1.5}
     .warn button{all:unset;cursor:pointer;text-decoration:underline;font-weight:600}
   </style>`;
@@ -273,9 +273,16 @@
           // not sent yet: kept in the outbox, the extension retries by itself (MSL-102)
           msg.className = r.state === 'action' ? 'msg err' : 'msg ok';
           msg.textContent = r.state === 'action' ? `${t('queuedAction')} (${r.error})` : t('queued');
+          if (r.state === 'action') {
+            const open = el('button', { type: 'button', class: 'link' }); open.textContent = t('openSettings');
+            open.onclick = () => send({ type: 'openOptions' }).catch(() => {});
+            msg.append(' ', open);
+          }
         } else {
           msg.className = 'msg ok';
           msg.innerHTML = `${esc(t('sent'))} <a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.ref || '#' + r.number)} ↗</a>`;
+          const note = [r.replayed && t('sentReplayed'), r.agent && t('sentAgent').replace('{agent}', r.agent)].filter(Boolean).join(' · ');
+          if (note) msg.append(' · ' + note);
         }
         btn.textContent = t('close'); btn.disabled = false; btn.type = 'button'; btn.onclick = close;
       } catch (err) {

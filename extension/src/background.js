@@ -28,6 +28,7 @@ async function syncCatcher() {
   return granted;
 }
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
+  await moveMesilaProjects();
   await syncCatcher();
   if (reason === 'install') chrome.runtime.openOptionsPage();
 });
@@ -47,12 +48,12 @@ async function sendQueued(item) {
 async function notifySent(item, r) {
   await chrome.notifications.create('sent:' + (r.url || item.id), {
     type: 'basic', iconUrl: 'icons/128.png', title: t('outboxSentTitle'),
-    message: `${r.ref || (r.number ? '#' + r.number : '')} · ${item.title}`.trim(), priority: 0,
+    message: [r.ref || (r.number ? '#' + r.number : ''), item.title, r.agent && t('sentAgent').replace('{agent}', r.agent)].filter(Boolean).join(' · '), priority: 0,
   }).catch(() => {});
 }
 const runOutbox = (opts = {}) => outbox.process(sendQueued, { onSent: notifySent, ...opts });
 chrome.alarms.onAlarm.addListener(a => { if (a.name === outbox.ALARM_NAME) runOutbox(); });
-chrome.runtime.onStartup.addListener(() => { outbox.sync(); runOutbox(); });
+chrome.runtime.onStartup.addListener(async () => { await moveMesilaProjects(); outbox.sync(); runOutbox(); });
 chrome.runtime.onInstalled.addListener(() => { outbox.sync(); });
 self.addEventListener('online', () => runOutbox());
 chrome.notifications.onClicked.addListener(id => {
@@ -149,6 +150,32 @@ export function mesilaProjectFrom(origin, msg, projects) {
     connectedFrom: origin, connectedAt: new Date().toISOString(),
   };
   return { projects: old ? projects.map(p => (same(p) ? project : p)) : [...projects, project], project, created: !old };
+}
+
+// Mesila moved off Vercel on 2026-11-01: projects connected from the old address keep their token (same database),
+// only the address changes (on install/update and on browser start; nothing to do once moved). Waiting tickets of
+// those projects are sent at once (the dead address answered 402 without CORS, so they kept waiting).
+export const MESILA_MOVED = { 'https://mesila-rho.vercel.app': 'https://mesila.firstmark.app' };
+export function movedMesilaProjects(projects) {
+  const moved = new Set();
+  const out = [];
+  for (const p of projects) {
+    const to = p.backend === 'mesila' && MESILA_MOVED[p.url];
+    if (!to) { out.push(p); continue; }
+    // already connected again from the new address: the old copy goes
+    if (projects.some(x => x.backend === 'mesila' && x.url === to && x.board === p.board)) continue;
+    moved.add(p.id);
+    out.push({ ...p, url: to, ...(p.connectedFrom === p.url ? { connectedFrom: to } : {}) });
+  }
+  return { projects: out, moved: [...moved] };
+}
+async function moveMesilaProjects() {
+  const { projects } = await getSettings();
+  const r = movedMesilaProjects(projects);
+  if (r.projects.length === projects.length && !r.moved.length) return;
+  await chrome.storage.local.set({ projects: r.projects });
+  const force = (await outbox.list()).filter(i => r.moved.includes(i.projectId)).map(i => i.id);
+  if (force.length) runOutbox({ force });
 }
 
 chrome.runtime.onMessageExternal.addListener((msg, sender, reply) => {

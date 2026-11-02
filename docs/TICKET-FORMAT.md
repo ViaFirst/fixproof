@@ -95,7 +95,7 @@ part and `fixproof:v1` block. The extension creates the card with its screenshot
 (`POST /api/v1/boards/KEY/cards`, multipart; project settings: Mesila address, board key, agent token). It sends the
 GitHub-style labels (`type: bug`, `device: mobile`) plus the bare type (`bug`): Mesila keeps the ones the board has.
 "High priority" sets the card's priority field. The CLI talks to Mesila's MCP endpoint (`/api/mcp`) and uploads screenshots to
-`/api/uploads` with an agent token (Mesila → Settings → AI agents; never written to files): `MESILA_TOKEN`, else on
+`/api/uploads` with an agent token (Mesila → API keys; never written to files): `MESILA_TOKEN`, else on
 macOS the keychain item stored once with `security add-generic-password -s fixproof-mesila -a <mesila-host> -w`.
 
 ```json
@@ -112,7 +112,8 @@ macOS the keychain item stored once with `security add-generic-password -s fixpr
 }
 ```
 
-- `label` — only cards with this label are tickets (omit to treat every card as one).
+- Tickets are the cards the extension made (their description has the `fixproof:v1` block, any type) plus the
+  cards with `label` (for reports written by hand).
 - Status comes from the card's column and one label:
 
 | Status | On the card | Set by |
@@ -128,6 +129,12 @@ macOS the keychain item stored once with `security add-generic-password -s fixpr
   `{ type: "connect", board, name, token, sites? }` via `externally_connectable` (Mesila sites only). The extension
   saves or updates the Mesila project for that board; its address is the sender's origin. `{ type: "ping", board }`
   answers `{ version, connected }`. Extension ID for unpacked builds: `afohdlecpkmdojkdkeinjjjlbnicignj`.
+  Mesila sites: `https://mesila.firstmark.app` (since extension 0.4.4; projects saved from the old
+  `mesila-rho.vercel.app` move to it by themselves) and `http://localhost:3000` for development. A new Mesila address
+  needs an extension release first: the saved address is the origin, and other sites cannot connect.
+- **Mesila's answer** (extension 0.4.4+): `agent_task` (the board's "Fixproof → AI" rule gave the card to this agent)
+  and `replayed` (a repeat found the card already made) are shown next to the card link and in the "delivered"
+  notification. An address that answers with something other than Mesila's JSON is reported as a wrong address.
 - **Delivery guarantee** (extension 0.4+): every ticket has an `id` (also in the `fixproof:v1` block). If the backend is
   down, the ticket waits in the extension's outbox and is retried (30 s … 1 h, survives a browser restart). Mesila gets
   the id as `Idempotency-Key` and answers a repeat with the same card; on GitHub the extension finds the issue whose

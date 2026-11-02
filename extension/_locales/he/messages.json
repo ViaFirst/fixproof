@@ -204,7 +204,7 @@
   "message": "טוקן Mesila"
  },
  "optMesilaTokenHelp": {
-  "message": "טוקן סוכן מ-Mesila ← הגדרות ← סוכני AI ‏(msl_…). נשמר רק בדפדפן הזה."
+  "message": "מפתח גישה מ-Mesila ← «מפתחות API» ‏(msl_…) — או חברו את הלוח מ-Mesila: הגדרות הלוח ← Fixproof. נשמר רק בדפדפן הזה."
  },
  "optBadMesilaUrl": {
   "message": "כתובת Mesila חייבת להתחיל ב-http:// או https://"
@@ -289,5 +289,17 @@
  },
  "optPrivacy": {
   "message": "פרטיות"
+ },
+ "mesilaNotHere": {
+  "message": "Mesila לא עונה בכתובת {url} (HTTP {status}): בדקו את כתובת Mesila בהגדרות הפרויקט או חברו את הלוח מחדש מתוך Mesila"
+ },
+ "sentAgent": {
+  "message": "הועבר אל {agent}"
+ },
+ "sentReplayed": {
+  "message": "הוא כבר נוצר קודם"
+ },
+ "mesilaUnreachable": {
+  "message": "Mesila לא זמינה בכתובת {url}. אם הכתובת ישנה, תקנו אותה בהגדרות הפרויקט או חברו את הלוח מחדש מתוך Mesila; אחרת הכרטיס יישלח כש־Mesila תחזור"
  }
 }

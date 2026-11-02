@@ -204,7 +204,7 @@
   "message": "Токен Mesila"
  },
  "optMesilaTokenHelp": {
-  "message": "Токен агента из Mesila → Настройки → ИИ-агенты (msl_…). Хранится только в этом браузере."
+  "message": "Ключ доступа из Mesila → «API-ключи» (msl_…) — или подключите борд из Mesila: настройки борда → Fixproof. Хранится только в этом браузере."
  },
  "optBadMesilaUrl": {
   "message": "Адрес Mesila должен начинаться с http:// или https://"
@@ -289,5 +289,17 @@
  },
  "optPrivacy": {
   "message": "Конфиденциальность"
+ },
+ "mesilaNotHere": {
+  "message": "По адресу {url} Mesila не отвечает (HTTP {status}): проверьте адрес Mesila в настройках проекта или подключите борд заново из Mesila"
+ },
+ "sentAgent": {
+  "message": "отдано агенту {agent}"
+ },
+ "sentReplayed": {
+  "message": "он уже был создан"
+ },
+ "mesilaUnreachable": {
+  "message": "Mesila недоступна по адресу {url}. Если адрес устарел, поправьте его в настройках проекта или подключите борд заново из Mesila; иначе тикет уйдёт, когда Mesila снова ответит"
  }
 }

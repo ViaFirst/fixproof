@@ -1,9 +1,10 @@
 // Mesila backend: a ticket is a card on a Mesila board (REST /api/v1, see docs/TICKET-FORMAT.md → Backends).
-// Project settings: url (Mesila address), board (KEY), token (agent token msl_…, Mesila → Settings → AI agents).
+// Project settings: url (Mesila address), board (KEY), token (API key msl_…, Mesila → API keys; or the board's Connect button).
 // The API answers any origin (Bearer only, no cookies), so no host permission is needed for the Mesila address.
 import { errorFor, SendError } from '../outbox.js';
 
 const base = project => String(project.url || '').trim().replace(/\/+$/, '');
+const tr = k => chrome.i18n.getMessage(k) || k;
 
 async function call(project, path, init = {}) {
   if (!project.token) throw new SendError('No Mesila token in the project settings', { action: true });
@@ -11,9 +12,15 @@ async function call(project, path, init = {}) {
   try {
     r = await fetch(base(project) + path, { ...init, signal: AbortSignal.timeout(60_000), headers: { authorization: 'Bearer ' + project.token, ...(init.headers || {}) } });
   } catch {
-    throw errorFor(0, 'Mesila is not reachable at ' + base(project));
+    // no answer, or an answer without CORS headers (a dead or moved address looks the same): keep retrying, but say what to check
+    throw errorFor(0, tr('mesilaUnreachable').replace('{url}', base(project)));
   }
   const data = await r.json().catch(() => null);
+  // something else answers at this address (Mesila moved, a parked or paywalled domain — the old Vercel address gave 402):
+  // a retry will not help, the user has to fix the address or connect the board again
+  if (typeof data?.ok !== 'boolean' && r.status < 500 && r.status !== 408 && r.status !== 429) {
+    throw new SendError(tr('mesilaNotHere').replace('{url}', base(project)).replace('{status}', r.status), { status: r.status, action: true });
+  }
   if (!r.ok || !data?.ok) throw errorFor(r.status, `Mesila ${r.status}: ${data?.error || r.statusText}`);
   return data.data;
 }
@@ -39,5 +46,6 @@ export async function createTicket(settings, project, ticket) {
   for (const img of ticket.images) form.append('files', await (await fetch(img.dataUrl)).blob(), img.name);
   // the same ticket id on every retry: Mesila returns the card it already made instead of a duplicate (MSL-101)
   const card = await call(project, `/api/v1/boards/${encodeURIComponent(project.board)}/cards`, { method: 'POST', body: form, headers: ticket.id ? { 'idempotency-key': ticket.id } : {} });
-  return { number: card.number, ref: card.ref, url: card.url };
+  // agent: the board's "Fixproof → AI" rule gave the card to this agent; replayed: a retry found the card already made
+  return { number: card.number, ref: card.ref, url: card.url, agent: card.agent_task || null, replayed: !!card.replayed };
 }

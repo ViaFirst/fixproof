@@ -126,14 +126,13 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
       };
       case 'outboxSend': await runOutbox({ force: [msg.id] }); return {};
       case 'outboxDelete': await outbox.remove(msg.id); return {};
-      // settings backup (MSL-321): save with a key of a project on that Mesila; without one the Mesila page saves it
-      case 'backupStatus': case 'backupSave': {
-        const s = await getSettings();
-        const home = mesilaHome(s.projects);
-        const p = s.projects.find(x => x.backend === 'mesila' && x.url === home && x.token);
-        if (!p) return { home, noKey: true };
-        if (msg.type === 'backupStatus') return { home, ...(await mesila.savedSettings(p)) };
-        return { home, ...(await mesila.saveSettings(p, { ...buildSnapshot(s, home), version: VERSION })) };
+      // settings sync with the Mesila account (MSL-329, was the "Save to Mesila" backup of MSL-321)
+      case 'syncStatus': return await pushSync();
+      case 'syncPush': return await pushSync({ force: true });
+      case 'syncSet': {
+        const sync = await getSync();
+        await chrome.storage.local.set({ sync: { ...sync, on: !!msg.on } });
+        return msg.on ? await pushSync() : { ...sync, on: false };
       }
       case 'importFile': {
         const { count, ...next } = applySnapshot(await getSettings(), msg.data);
@@ -144,6 +143,46 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
     throw new Error('unknown message ' + msg.type);
   })().then(r => reply({ ok: true, ...r }), e => reply({ ok: false, error: e.message }));
   return true;
+});
+
+// ---------- settings sync with the Mesila account (MSL-329) ----------
+// Every change of the settings goes to Mesila by itself a few seconds later, with the key of a board on that Mesila.
+// Back it does not come by itself: a restore gives new board keys, so another copy in Mesila (another browser, a
+// clean profile that connected one board) is not overwritten either: the settings page asks which one to keep.
+const SYNC_DELAY = 2000;
+const canon = v => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.fromEntries(Object.keys(x).sort().map(k => [k, x[k]])) : x));
+const digest = async v => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(canon(v))))].map(b => b.toString(16).padStart(2, '0')).join('');
+// sync: { on, at (updated_at of the copy this browser wrote), hash (of what it wrote), projects, err, conflict, home }
+const getSync = async () => ({ on: true, ...(await chrome.storage.local.get('sync')).sync });
+async function pushSync({ force = false } = {}) {
+  const sync = await getSync();
+  if (!sync.on && !force) return sync;
+  const s = await getSettings();
+  const home = mesilaHome(s.projects);
+  const p = s.projects.find(x => x.backend === 'mesila' && x.url === home && x.token);
+  const put = async next => { const v = { on: sync.on || force, ...next, home }; await chrome.storage.local.set({ sync: v }); return v; };
+  if (!p) return put({ at: sync.at, err: 'noKey' });
+  const body = buildSnapshot(s, home);
+  const hash = await digest(body);
+  if (!force && hash === sync.hash && !sync.err && !sync.conflict) return sync;
+  try {
+    if (!force) {
+      const server = await mesila.savedSettings(p);
+      if (server.saved && server.updated_at !== sync.at && canon(server.snapshot) !== canon(body.snapshot)) {
+        return put({ at: sync.at, hash: sync.hash, conflict: { at: server.updated_at, projects: server.snapshot.projects.length } });
+      }
+    }
+    const r = await mesila.saveSettings(p, { ...body, version: VERSION });
+    return put({ at: r.updated_at, hash, projects: r.projects });
+  } catch (e) {
+    return put({ at: sync.at, hash: sync.hash, err: e.message });
+  }
+}
+let syncTimer = null;
+chrome.storage.onChanged.addListener((c, area) => {
+  if (area !== 'local' || !(c.projects || c.token || c.reporter)) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => pushSync().catch(() => {}), SYNC_DELAY);
 });
 
 // ---------- Mesila connects a board (MSL-75) ----------
@@ -215,6 +254,8 @@ chrome.runtime.onMessageExternal.addListener((msg, sender, reply) => {
     if (msg?.type === 'restore') {
       const { count, ...next } = applySnapshot(await getSettings(), msg, origin);
       await chrome.storage.local.set(next);
+      // the user took the Mesila copy: what is here now (it plus the projects only this browser had) becomes the copy
+      await pushSync({ force: true }).catch(() => {});
       return { version: VERSION, projects: count };
     }
     throw new Error('unknown message');

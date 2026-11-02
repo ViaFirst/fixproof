@@ -60,3 +60,8 @@ footer a{color:inherit}
 .bar .dirty{font-size:14px;color:#b45309}
 #save:disabled{opacity:.45;cursor:default}
 
+label.check{flex-direction:row;align-items:center;gap:8px;font-size:14px;color:var(--ink);font-weight:500;cursor:pointer;margin-block-end:4px}
+details.more{margin-block-start:14px}
+details.more>summary{cursor:pointer;font-size:13px;color:var(--muted);margin-block-end:10px;width:fit-content}
+details.more>summary:hover{color:var(--ink)}
+label.check input{width:auto;flex:none;margin:0;padding:0;accent-color:var(--acc);inline-size:16px;block-size:16px}

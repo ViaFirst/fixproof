@@ -192,25 +192,27 @@ const sayBackup = (m, cls = '') => { backupOut.textContent = m; backupOut.classN
 const lang = (l => (['ru', 'he'].includes(l) ? l : 'en'))(chrome.i18n.getUILanguage().slice(0, 2));
 const mesilaPage = home => `${home}/${lang}/settings/agents#fixproof`;
 const stored = () => chrome.storage.local.get(['token', 'reporter', 'projects']);
-async function showBackup() {
-  const r = await send({ type: 'backupStatus' }).catch(() => null);
-  if (r?.saved) sayBackup(t('optBackupSavedAt').replace('{date}', fmtTime(r.updated_at)).replace('{n}', r.snapshot.projects.length));
-  else if (r?.noKey) sayBackup(t('optBackupNoKey'));
+// sync (MSL-329): the service worker sends every change itself; here only its state and the two choices
+const restoreBtn = $('backup-restore'), keepBtn = $('sync-push');
+function showSync(r) {
+  $('sync-on').checked = r.on !== false;
+  keepBtn.hidden = !r.conflict;
+  restoreBtn.classList.toggle('primary', !!r.conflict || r.err === 'noKey');
+  if (r.on === false) return sayBackup(t('optSyncOff'));
+  if (r.conflict) return sayBackup(t('optSyncConflict').replace('{date}', fmtTime(r.conflict.at)).replace('{n}', r.conflict.projects), 'err');
+  if (r.err === 'noKey') return sayBackup(t('optBackupNoKey'));
+  if (r.err) return sayBackup(t('optSyncError').replace('{error}', r.err), 'err');
+  if (r.at) sayBackup(t('optSynced').replace('{date}', fmtTime(r.at)).replace('{n}', r.projects ?? '—'), 'ok');
 }
-showBackup();
-$('backup-save').addEventListener('click', async () => {
-  if (markDirty()) return sayBackup(t('optBackupSaveFirst'), 'err');
-  sayBackup('…');
-  try {
-    const r = await send({ type: 'backupSave' });
-    if (r.noKey) { chrome.tabs.create({ url: mesilaPage(r.home) }); return sayBackup(t('optBackupOpened'), 'ok'); }
-    sayBackup(t('optBackupSaved').replace('{n}', r.projects), 'ok');
-  } catch (err) { sayBackup(err.message, 'err'); }
-});
+const syncNow = (msg = { type: 'syncStatus' }) => send(msg).then(showSync, err => sayBackup(err.message, 'err'));
+syncNow();
+chrome.storage.onChanged.addListener(c => { if (c.sync?.newValue) showSync(c.sync.newValue); });
+$('sync-on').addEventListener('change', e => { e.stopPropagation(); syncNow({ type: 'syncSet', on: e.target.checked }); });
+keepBtn.addEventListener('click', () => { sayBackup('…'); syncNow({ type: 'syncPush' }); });
 // a clean profile has no key: Mesila restores from its own page (signed in), with new keys for its boards
-$('backup-restore').addEventListener('click', async () => {
-  const r = await send({ type: 'backupStatus' }).catch(() => ({ home: 'https://mesila.firstmark.app' }));
-  chrome.tabs.create({ url: mesilaPage(r.home) });
+restoreBtn.addEventListener('click', async () => {
+  const r = await send({ type: 'syncStatus' }).catch(() => ({}));
+  chrome.tabs.create({ url: mesilaPage(r.home || 'https://mesila.firstmark.app') });
   sayBackup(t('optBackupOpened'), 'ok');
 });
 $('export').addEventListener('click', async () => {

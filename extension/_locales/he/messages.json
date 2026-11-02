@@ -302,15 +302,6 @@
  "mesilaUnreachable": {
   "message": "Mesila לא זמינה בכתובת {url}. אם הכתובת ישנה, תקנו אותה בהגדרות הפרויקט או חברו את הלוח מחדש מתוך Mesila; אחרת הכרטיס יישלח כש־Mesila תחזור"
  },
- "optBackup": {
-  "message": "גיבוי"
- },
- "optBackupHelp": {
-  "message": "שמרו את ההגדרות האלה בחשבון Mesila שלכם והחזירו אותן בלחיצה אחת אחרי התקנה מחדש או בדפדפן חדש. מפתחות הלוחות לא נשמרים: בשחזור Mesila מנפיקה חדשים."
- },
- "optBackupSave": {
-  "message": "שמירה ב-Mesila"
- },
  "optBackupRestore": {
   "message": "שחזור מ-Mesila"
  },
@@ -326,17 +317,11 @@
  "optExportHelp": {
   "message": "בקובץ יש את אסימון GitHub ואת מפתחות Mesila: שמרו עליו כמו על סיסמה."
  },
- "optBackupSavedAt": {
-  "message": "נשמר ב-Mesila {date}: {n} פרויקטים."
- },
  "optBackupNoKey": {
-  "message": "עדיין לא חובר כאן אף לוח Mesila: „שמירה” ו„שחזור” יפתחו את Mesila ← סוכני AI ← „הגדרות Fixproof בחשבון”."
+  "message": "עדיין לא חובר בדפדפן הזה אף לוח Mesila: חברו לוח (Mesila ← הגדרות הלוח ← Fixproof ← „חיבור”) או לחצו „שחזור מ-Mesila”."
  },
  "optBackupSaveFirst": {
   "message": "קודם שמרו את השינויים."
- },
- "optBackupSaved": {
-  "message": "✓ נשמר ב-Mesila: {n} פרויקטים."
  },
  "optBackupOpened": {
   "message": "Mesila נפתחה בלשונית חדשה: לחצו שם על הכפתור בבלוק „הגדרות Fixproof בחשבון” (התחברו אם תתבקשו)."
@@ -346,5 +331,32 @@
  },
  "optImportBad": {
   "message": "זה לא קובץ הגדרות של Fixproof."
+ },
+ "optSync": {
+  "message": "סנכרון עם Mesila"
+ },
+ "optSyncHelp": {
+  "message": "כל שינוי בהגדרות האלה נשמר בעצמו בחשבון Mesila שלכם. בדפדפן חדש או אחרי התקנה מחדש: „שחזור מ-Mesila”. מפתחות הלוחות לא נשמרים: בשחזור Mesila מנפיקה חדשים."
+ },
+ "optSyncOn": {
+  "message": "לסנכרן את ההגדרות עם חשבון Mesila שלי"
+ },
+ "optSyncOff": {
+  "message": "הסנכרון כבוי: השינויים נשארים רק בדפדפן הזה."
+ },
+ "optSynced": {
+  "message": "✓ סונכרן עם Mesila · {date} · פרויקטים: {n}"
+ },
+ "optSyncError": {
+  "message": "הסנכרון נכשל: {error}. ניסיון נוסף בשינוי הבא."
+ },
+ "optSyncConflict": {
+  "message": "ב-Mesila יש הגדרות אחרות (נשמרו {date}, פרויקטים: {n}): מדפדפן אחר או מוקדמות יותר. שחזרו אותן או החליפו אותן בהגדרות של הדפדפן הזה."
+ },
+ "optSyncKeepHere": {
+  "message": "להחליף בהגדרות של הדפדפן הזה"
+ },
+ "optMore": {
+  "message": "עוד: קובץ, גישה לאתרים"
  }
 }

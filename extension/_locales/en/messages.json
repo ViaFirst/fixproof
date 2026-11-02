@@ -302,15 +302,6 @@
  "mesilaUnreachable": {
   "message": "Mesila is not reachable at {url}. If the address is old, fix it in the project settings or connect the board again from Mesila; otherwise the ticket will be sent when Mesila is back"
  },
- "optBackup": {
-  "message": "Backup"
- },
- "optBackupHelp": {
-  "message": "Save these settings in your Mesila account and bring them back with one click after a reinstall or in a new browser. Board keys are not stored: Mesila gives new ones on restore."
- },
- "optBackupSave": {
-  "message": "Save to Mesila"
- },
  "optBackupRestore": {
   "message": "Restore from Mesila"
  },
@@ -326,17 +317,11 @@
  "optExportHelp": {
   "message": "The file holds the GitHub token and the Mesila keys: keep it like a password."
  },
- "optBackupSavedAt": {
-  "message": "Saved in Mesila {date}: {n} projects."
- },
  "optBackupNoKey": {
-  "message": "No Mesila board is connected here yet: Save and Restore open Mesila → AI agents → Fixproof settings."
+  "message": "No Mesila board is connected in this browser yet: connect one (Mesila → board settings → Fixproof → Connect) or press \"Restore from Mesila\"."
  },
  "optBackupSaveFirst": {
   "message": "Save the changes first."
- },
- "optBackupSaved": {
-  "message": "✓ Saved in Mesila: {n} projects."
  },
  "optBackupOpened": {
   "message": "Mesila is open in a new tab: press the button in “Fixproof settings in your account” there (sign in if asked)."
@@ -346,5 +331,32 @@
  },
  "optImportBad": {
   "message": "This is not a Fixproof settings file."
+ },
+ "optSync": {
+  "message": "Sync with Mesila"
+ },
+ "optSyncHelp": {
+  "message": "Every change of these settings is saved to your Mesila account by itself. In a new browser or after a reinstall: \"Restore from Mesila\". Board keys are not stored: Mesila gives new ones on restore."
+ },
+ "optSyncOn": {
+  "message": "Sync settings with my Mesila account"
+ },
+ "optSyncOff": {
+  "message": "Sync is off: changes stay in this browser only."
+ },
+ "optSynced": {
+  "message": "✓ Synced with Mesila · {date} · projects: {n}"
+ },
+ "optSyncError": {
+  "message": "Could not sync: {error}. It will try again on the next change."
+ },
+ "optSyncConflict": {
+  "message": "Mesila has other settings (saved {date}, projects: {n}): from another browser or from before. Restore them, or replace them with the settings of this browser."
+ },
+ "optSyncKeepHere": {
+  "message": "Replace with this browser's settings"
+ },
+ "optMore": {
+  "message": "More: file, site access"
  }
 }
